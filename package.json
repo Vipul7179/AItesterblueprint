@@ -1,0 +1,31 @@
+{
+  "name": "playwright-framework",
+  "version": "1.0.0",
+  "description": "Enterprise-level Playwright TypeScript Automation Framework for Wingify VWO Platform",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:valid": "playwright test tests/valid-login.spec.ts",
+    "test:invalid": "playwright test tests/invalid-login.spec.ts",
+    "test:valid:headed": "playwright test tests/valid-login.spec.ts --headed",
+    "test:invalid:headed": "playwright test tests/invalid-login.spec.ts --headed",
+    "test:report": "playwright show-report"
+  },
+  "keywords": [
+    "playwright",
+    "typescript",
+    "automation",
+    "enterprise",
+    "pom",
+    "wingify",
+    "vwo"
+  ],
+  "author": "QA Automation Engineer",
+  "license": "ISC",
+  "devDependencies": {
+    "@playwright/test": "^1.64.1",
+    "@types/node": "^26.6.6",
+    "typescript": "^7.0.2"
+  }
+}
