@@ -1,0 +1,2 @@
+# AItesterblueprint
+AI Automation Framework
