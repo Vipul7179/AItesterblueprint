@@ -1,9 +1,9 @@
 # Anti-Hallucination Rules
 
-- **Author:** 
-- **Role:** 
-- **Website:** 
-- **LinkedIn:** 
+- **Author:** Vipul Pratap Singh
+- **Role:** QA Engineer
+- **Website:** https://vipulqa.netlify.app/
+- **LinkedIn:** https://www.linkedin.com/in/vipul-singh-46792a1a4/
 
 ---
 
