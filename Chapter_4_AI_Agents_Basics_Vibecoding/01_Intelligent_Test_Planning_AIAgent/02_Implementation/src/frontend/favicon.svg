@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" fill="none">
+  <defs>
+    <linearGradient id="favGrad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#38bdf8"/>
+      <stop offset="50%" stop-color="#818cf8"/>
+      <stop offset="100%" stop-color="#c084fc"/>
+    </linearGradient>
+    <linearGradient id="favGrad2" x1="100%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#f43f5e"/>
+      <stop offset="50%" stop-color="#8b5cf6"/>
+      <stop offset="100%" stop-color="#6366f1"/>
+    </linearGradient>
+    <radialGradient id="favCoreGlow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="60%" stop-color="#c7d2fe"/>
+      <stop offset="100%" stop-color="#6366f1" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="favGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2.5" flood-color="#818cf8" flood-opacity="0.7"/>
+    </filter>
+  </defs>
+
+  <!-- Deep Obsidian Icon Base -->
+  <rect width="64" height="64" rx="16" fill="#090d16"/>
+  <rect width="64" height="64" rx="16" stroke="rgba(255,255,255,0.12)" stroke-width="1.5"/>
+
+  <!-- Outer Hexagonal Quantum Nexus Frame -->
+  <path d="M32 9L52 20.5V43.5L32 55L12 43.5V20.5L32 9Z" stroke="url(#favGrad1)" stroke-width="3" stroke-linejoin="round"/>
+
+  <!-- Inner Prismatic Facet -->
+  <path d="M32 19L44 26V38L32 45L20 38V26L32 19Z" fill="url(#favGrad2)" fill-opacity="0.3" stroke="url(#favGrad2)" stroke-width="2.5" stroke-linejoin="round"/>
+
+  <!-- Radiating Synaptic Connectors -->
+  <line x1="32" y1="9" x2="32" y2="19" stroke="url(#favGrad1)" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="52" y1="20.5" x2="44" y2="26" stroke="url(#favGrad1)" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="52" y1="43.5" x2="44" y2="38" stroke="url(#favGrad1)" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="32" y1="55" x2="32" y2="45" stroke="url(#favGrad1)" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="12" y1="43.5" x2="20" y2="38" stroke="url(#favGrad1)" stroke-width="2.5" stroke-linecap="round"/>
+  <line x1="12" y1="20.5" x2="20" y2="26" stroke="url(#favGrad1)" stroke-width="2.5" stroke-linecap="round"/>
+
+  <!-- Central High-Luminance Quantum Spark -->
+  <path d="M32 23L34.5 29.5L41 32L34.5 34.5L32 41L29.5 34.5L23 32L29.5 29.5L32 23Z" fill="url(#favCoreGlow)" filter="url(#favGlow)"/>
+
+  <!-- Perimeter Vertex Synapses -->
+  <circle cx="32" cy="9" r="2.5" fill="#38bdf8"/>
+  <circle cx="52" cy="20.5" r="2.5" fill="#818cf8"/>
+  <circle cx="52" cy="43.5" r="2.5" fill="#c084fc"/>
+  <circle cx="32" cy="55" r="2.5" fill="#ec4899"/>
+  <circle cx="12" cy="43.5" r="2.5" fill="#8b5cf6"/>
+  <circle cx="12" cy="20.5" r="2.5" fill="#38bdf8"/>
+  <circle cx="32" cy="32" r="2" fill="#ffffff"/>
+</svg>

@@ -1,0 +1,128 @@
+{
+  "name": "Jira_AIAgent",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "Hi there! 👋\nMy name is Vipul. How can I assist you today?",
+        "options": {
+          "customCss": "\n/* ==========================================\n   PREMIUM AI JIRA ASSISTANT\n   Purple / Indigo / Blue Theme\n========================================== */\n\n:root {\n  --chat--color--primary: #7c3aed;\n  --chat--color--primary-shade-50: #6d28d9;\n  --chat--color--primary--shade-100: #5b21b6;\n\n  --chat--color--secondary: #2563eb;\n  --chat--color-secondary-shade-50: #1d4ed8;\n\n  --chat--color-white: #ffffff;\n  --chat--color-light: #f5f3ff;\n  --chat--color-light-shade-50: #e9e5ff;\n  --chat--color-light-shade-100: #d8d1fa;\n  --chat--color-medium: #c4b5fd;\n  --chat--color-dark: #17133d;\n  --chat--color-disabled: #cbd5e1;\n  --chat--color-typing: #7c3aed;\n\n  --chat--spacing: 1rem;\n  --chat--border-radius: 18px;\n  --chat--transition-duration: 0.3s;\n\n  --chat--font-family: Inter, -apple-system, BlinkMacSystemFont,\n    \"Segoe UI\", sans-serif;\n\n  /* Window */\n  --chat--window--width: 100%;\n  --chat--window--height: 100%;\n  --chat--window--bottom: 0;\n  --chat--window--right: 0;\n  --chat--window--border: none;\n  --chat--window--border-radius: 0;\n\n  /* Header */\n  --chat--header-height: auto;\n  --chat--header--padding: 2rem;\n  --chat--header--background: #17133d;\n  --chat--header--color: #ffffff;\n  --chat--heading--font-size: 2rem;\n  --chat--subtitle--font-size: 1rem;\n  --chat--subtitle--line-height: 1.7;\n\n  /* Messages */\n  --chat--message--font-size: 1rem;\n  --chat--message--padding: 1rem 1.25rem;\n  --chat--message--border-radius: 18px;\n  --chat--message-line-height: 1.65;\n  --chat--message--margin-bottom: 1.2rem;\n\n  --chat--message--bot--background: rgba(255,255,255,0.88);\n  --chat--message--bot--color: #211b50;\n  --chat--message--bot--border: 1px solid rgba(139,92,246,0.15);\n\n  --chat--message--user--background: linear-gradient(\n    135deg, #7c3aed, #4f46e5\n  );\n  --chat--message--user--color: #ffffff;\n  --chat--message--user--border: none;\n\n  --chat--message--pre--background: #f1edff;\n  --chat--messages-list--padding: 2rem;\n\n  /* Input */\n  --chat--textarea--height: 58px;\n  --chat--textarea--max-height: 12rem;\n  --chat--input--font-size: 1rem;\n  --chat--input--border: 1px solid #ddd6fe;\n  --chat--input--border-radius: 18px;\n  --chat--input--padding: 1rem;\n  --chat--input--background: #ffffff;\n  --chat--input--text-color: #211b50;\n  --chat--input--border-active: 1px solid #8b5cf6;\n\n  /* Footer */\n  --chat--footer--background: rgba(255,255,255,0.92);\n  --chat--footer--color: #211b50;\n\n  /* Buttons */\n  --chat--button--padding: 0.85rem 1.4rem;\n  --chat--button--border-radius: 14px;\n  --chat--button--font-size: 1rem;\n\n  --chat--button--color--primary: #ffffff;\n  --chat--button--background--primary: #7c3aed;\n  --chat--button--background--primary--hover: #5b21b6;\n\n  /* Toggle */\n  --chat--toggle--size: 62px;\n  --chat--toggle--border-radius: 50%;\n  --chat--toggle--background: #7c3aed;\n  --chat--toggle--hover--background: #5b21b6;\n  --chat--toggle--color: #ffffff;\n}\n\n/* ==========================================\n   ANIMATED BACKGROUND\n========================================== */\n\n.chat-body {\n  position: relative;\n  overflow: hidden;\n\n  background:\n    radial-gradient(circle at 10% 15%,\n      rgba(139,92,246,0.20), transparent 35%),\n    radial-gradient(circle at 90% 80%,\n      rgba(56,189,248,0.16), transparent 35%),\n    linear-gradient(135deg,#f5f3ff,#eef2ff,#ecfeff) !important;\n\n  background-size: 180% 180%;\n  animation: backgroundFlow 16s ease infinite;\n}\n\n@keyframes backgroundFlow {\n  0% { background-position: 0% 50%; }\n  50% { background-position: 100% 50%; }\n  100% { background-position: 0% 50%; }\n}\n\n/* ==========================================\n   PREMIUM HEADER\n========================================== */\n\n.chat-header {\n  position: relative;\n  overflow: hidden;\n  isolation: isolate;\n\n  background: linear-gradient(\n    115deg,#17133d,#312e81,#5b21b6,#4338ca\n  ) !important;\n\n  background-size: 250% 250% !important;\n  animation: headerGradient 12s ease infinite;\n\n  padding: 28px 32px !important;\n  border: none !important;\n  box-shadow: 0 10px 35px rgba(49,46,129,0.22);\n}\n\n@keyframes headerGradient {\n  0% { background-position: 0% 50%; }\n  50% { background-position: 100% 50%; }\n  100% { background-position: 0% 50%; }\n}\n\n.chat-header::before {\n  content: \"\";\n  position: absolute;\n  z-index: -1;\n  width: 280px;\n  height: 280px;\n  right: 5%;\n  top: -180px;\n  border-radius: 50%;\n  background: rgba(167,139,250,0.28);\n  filter: blur(15px);\n  animation: floatGlow 7s ease-in-out infinite alternate;\n}\n\n.chat-header::after {\n  content: \"\";\n  position: absolute;\n  top: 0;\n  left: -100%;\n  width: 45%;\n  height: 100%;\n  background: linear-gradient(\n    90deg,transparent,rgba(255,255,255,0.15),transparent\n  );\n  animation: headerShine 8s ease-in-out infinite;\n  pointer-events: none;\n}\n\n@keyframes headerShine {\n  0%,65% { left: -100%; }\n  100% { left: 150%; }\n}\n\n@keyframes floatGlow {\n  from { transform: translate(0,0) scale(1); }\n  to { transform: translate(-40px,45px) scale(1.25); }\n}\n\n/* ==========================================\n   MESSAGE CARDS\n========================================== */\n\n.chat-message {\n  max-width: 78%;\n  border-radius: 20px !important;\n  transition: transform 0.3s ease, box-shadow 0.3s ease;\n  animation: messageAppear 0.5s cubic-bezier(.2,.8,.2,1) both;\n}\n\n.chat-message:hover {\n  transform: translateY(-3px);\n  box-shadow: 0 12px 30px rgba(76,29,149,0.12);\n}\n\n@keyframes messageAppear {\n  from {\n    opacity: 0;\n    transform: translateY(16px) scale(.97);\n  }\n  to {\n    opacity: 1;\n    transform: translateY(0) scale(1);\n  }\n}\n\n/* Bot message */\n.chat-message:has(.chat-message-markdown) {\n  backdrop-filter: blur(14px);\n}\n\n/* ==========================================\n   INPUT AREA\n========================================== */\n\n.chat-footer {\n  background: rgba(255,255,255,0.86) !important;\n  backdrop-filter: blur(20px);\n  border-top: 1px solid rgba(139,92,246,0.16) !important;\n  box-shadow: 0 -8px 30px rgba(49,46,129,0.06);\n  padding: 16px 22px !important;\n}\n\n/* Input focus */\n.chat-input textarea {\n  border-radius: 18px !important;\n  transition: all 0.3s ease;\n}\n\n.chat-input textarea:focus {\n  outline: none;\n  border-color: #8b5cf6 !important;\n  box-shadow: 0 0 0 4px rgba(139,92,246,0.13);\n}\n\n/* ==========================================\n   SEND BUTTON\n========================================== */\n\n.chat-input-send-button {\n  border-radius: 15px !important;\n  transition: all 0.3s ease !important;\n}\n\n.chat-input-send-button:hover {\n  transform: scale(1.1) rotate(-5deg);\n  filter: drop-shadow(0 5px 12px rgba(124,58,237,0.4));\n}\n\n.chat-input-send-button:active {\n  transform: scale(.94);\n}\n\n/* ==========================================\n   SCROLLBAR\n========================================== */\n\n.chat-body::-webkit-scrollbar {\n  width: 8px;\n}\n\n.chat-body::-webkit-scrollbar-thumb {\n  background: linear-gradient(#8b5cf6,#4f46e5);\n  border-radius: 20px;\n}\n\n.chat-body::-webkit-scrollbar-track {\n  background: transparent;\n}\n\n/* ==========================================\n   MOBILE RESPONSIVENESS\n========================================== */\n\n@media (max-width: 600px) {\n  .chat-header {\n    padding: 20px 16px !important;\n  }\n\n  .chat-message {\n    max-width: 94%;\n  }\n\n  --chat--messages-list--padding: 1rem;\n}\n\n/* ==========================================\n   ACCESSIBILITY\n========================================== */\n\n@media (prefers-reduced-motion: reduce) {\n  *,\n  *::before,\n  *::after {\n    animation-duration: 0.01ms !important;\n    animation-iteration-count: 1 !important;\n    transition-duration: 0.01ms !important;\n    scroll-behavior: auto !important;\n  }\n}\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "1e62a56c-35f8-40b9-a786-2b98ace6278c",
+      "name": "When chat message received",
+      "webhookId": "080da617-ce6b-49bb-ba08-429cbe997dde"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "# RICEPOT Prompt – Intelligent Jira Test Plan Agent\n\n## R – Role\n\nYou are an Intelligent Jira Test Plan Agent with 15 years of professional experience in Software Quality Assurance (QA), software testing, test planning, and test strategy.\n\nYou specialize in analyzing Jira tickets and converting requirements into comprehensive, structured, and actionable test plans.\n\n## I – Instructions\n\nWhen a user provides a Jira Issue ID (for example, `VWO-140`), perform the following steps:\n\n1. Extract and validate the Jira Issue ID provided by the user.\n2. Use the already connected Jira tool to fetch the corresponding Jira issue.\n3. Retrieve all available relevant information, including:\n   - Issue Summary\n   - Description\n   - Acceptance Criteria\n   - Issue Type\n   - Priority\n   - Components\n   - Labels\n   - Linked Issues\n   - Attachments or other relevant information, if accessible.\n4. Thoroughly analyze the fetched Jira information.\n5. Use the existing Test Plan Template provided to you as the mandatory structure.\n6. Generate a comprehensive test plan based on the actual Jira requirements.\n7. Present the completed test plan to the user in a clear, professional, and organized format.\n\n## C – Context\n\nThe user will provide a Jira Issue ID, such as `VWO-140`.\n\nYour primary source of truth is the Jira issue retrieved through the connected Jira tool.\n\nThe test plan must be based on:\n- Actual Jira ticket requirements.\n- Available acceptance criteria.\n- Relevant descriptions and linked issues.\n- The existing Test Plan Template.\n\nDo not generate a generic test plan without first retrieving and analyzing the Jira ticket.\n\n## E – Expected Workflow\n\nFollow this workflow for every request:\n\n**Step 1: Receive Jira ID**\n- Ask the user for a Jira Issue ID if one has not been provided.\n- Validate the expected Jira ID format.\n\n**Step 2: Fetch Jira Issue**\n- Use the connected Jira tool to retrieve the issue.\n- Do not assume or fabricate Jira ticket information.\n- If the ticket cannot be found or accessed, inform the user.\n\n**Step 3: Analyze Requirements**\n- Identify the feature, functionality, business rules, and expected behavior.\n- Extract functional and non-functional requirements where supported.\n- Identify positive, negative, boundary, validation, and edge cases.\n- Identify missing or ambiguous requirements.\n\n**Step 4: Generate Test Plan**\n- Follow the existing Test Plan Template exactly.\n- Populate each applicable section using the retrieved Jira information.\n- Include relevant testing scenarios and coverage.\n- Clearly identify assumptions and information gaps instead of presenting them as confirmed requirements.\n\n**Step 5: Deliver Test Plan**\n- Provide the completed test plan to the user.\n- Maintain the original template's structure and formatting.\n- Make the output professional, readable, and ready for review.\n\n## P – Persona\n\nAct as a senior QA Lead and Test Strategy Expert with 15 years of hands-on experience.\n\nThink critically like an experienced QA professional:\n- Focus on requirement coverage.\n- Identify potential failure scenarios.\n- Consider integration and regression impacts.\n- Look for edge cases and unexpected user behavior.\n- Ensure testability and traceability.\n- Avoid unnecessary or duplicate test scenarios.\n\n## O – Output Format\n\nThe final output must follow the existing Test Plan Template.\n\nRequirements:\n- Preserve all template headings and sections.\n- Do not remove mandatory sections.\n- Populate all relevant sections.\n- Use clear and professional QA terminology.\n- Include test scenarios wherever required by the template.\n- Ensure every test scenario is traceable to the Jira requirements.\n- Mark unavailable information as \"Not specified in Jira\".\n- Mark unclear requirements as \"Clarification Required\".\n\nDeliver the final test plan as a complete, well-structured document.\n\n## T – Tools, Accuracy & Constraints\n\n**Mandatory Tool Usage**\n- Use the already connected Jira tool to fetch the Jira issue.\n- Use the existing Test Plan Template as the reference for document structure.\n- Do not ask the user to manually copy Jira ticket details when the connected Jira tool can retrieve them.\n\n**Anti-Hallucination Rules**\n\nDO:\n- Use only information supported by the Jira ticket and available project documentation.\n- Clearly identify missing information.\n- Highlight ambiguous acceptance criteria.\n- Ask for clarification when essential requirements are unavailable.\n- Separate confirmed requirements from assumptions.\n- Maintain traceability between requirements and test scenarios.\n\nDO NOT:\n- Invent requirements or business rules.\n- Assume application behavior.\n- Fabricate acceptance criteria.\n- Invent API endpoints, database fields, or error messages.\n- Claim that a test scenario is required when it is not supported by the available evidence.\n- Generate a test plan if the Jira issue could not be retrieved successfully.\n\n**Final Objective:**\n\nThe user provides a Jira Issue ID → The agent fetches the Jira ticket → Analyzes the requirements → Uses the existing Test Plan Template → Generates and delivers a complete, accurate, professional test plan.\n\n## TEST PLAN TEMPLATE (MANDATORY)\n\nUse the following template as the mandatory structure for generating every Jira test plan.\n\n\n# Test Plan — <JIRA-KEY>: <title>\n\n> Status: **DRAFT — pending human review.** Not approved until a QA owner signs off.\n\n## 1. Scope & Objectives\n- **In scope:**\n- **Out of scope:**\n- **Objective:** what \"tested\" means for this ticket.\n\n## 2. Gaps & Questions for the author\n| # | Area | Finding (⚠️/❌) | Question to author |\n|---|------|----------------|--------------------|\n| 1 |      |                |                    |\n\n## 3. Test Scenarios\n| ID | Priority | Type (pos/neg/boundary) | Scenario | Maps to (AC / gap) |\n|----|----------|-------------------------|----------|--------------------|\n| TS-1 | P0 |                       |          |                    |\n\n## 4. Test Data & Environment\n- **Data:**\n- **Environment / flags:**\n- **Roles / permissions:**\n\n## 5. Risks & Assumptions\n- **Assumptions made:**\n- **Risks:**\n\n## 6. Entry / Exit criteria\n- **Entry:**\n- **Exit:**\n\n## 7. Resource Allocation\n\n## 8. Timelines, Sprint Details\n\n\n---\n## HUMAN REVIEW GATE\n- **I assumed:** …\n- **I could not confirm:** …\n- **Open questions blocking sign-off:** …\n- **Approve, or edit, before I write test cases / automation.**\n\n\n### Template Usage Rules\n1. Follow the template's exact headings, section order, and formatting.\n2. Do not remove or rename any existing sections.\n3. Fill each section using information retrieved from Jira.\n4. If information is unavailable, write \"Not specified in Jira\".\n5. Do not invent details to fill empty sections.\n6. Add test scenarios only where relevant to the Jira requirements.\n7. Preserve tables and other formatting from the original template.\n8. Do not create an alternative format unless explicitly requested by the user."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "fac0ed9e-0397-4699-a874-fc876dc4cc7f",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        224,
+        256
+      ],
+      "id": "ae5c72ed-acec-4ce8-bc96-1642ef240014",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "huJdgWfqWDg6OYqV",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "issueKey": "={{ /*n8n-auto-generated-fromAI-override*/ $fromAI('Issue_Key', ``, 'string') }}",
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.jiraTool",
+      "typeVersion": 1,
+      "position": [
+        368,
+        256
+      ],
+      "id": "60d24376-916f-486d-a9d6-dad68f001edb",
+      "name": "Get an issue in Jira Software",
+      "credentials": {
+        "jiraSoftwareCloudApi": {
+          "id": "K0fJ4occBLIL0hvi",
+          "name": "Jira SW Cloud account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get an issue in Jira Software": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "275049f4-efcd-4fa5-959d-23aa500ff101",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5e65d5e8114c11ba6abd90455c75a5ad7dd0ab4bf44864b638e809696cf96cfb"
+  },
+  "nodeGroups": [],
+  "id": "8IulXUl8TZBZ2qHb",
+  "tags": []
+}
