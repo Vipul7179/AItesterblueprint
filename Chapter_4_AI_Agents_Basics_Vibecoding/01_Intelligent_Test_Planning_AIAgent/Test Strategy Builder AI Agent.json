@@ -1,0 +1,129 @@
+{
+  "name": "Test Strategy Builder AI Agent",
+  "nodes": [
+    {
+      "parameters": {
+        "public": true,
+        "initialMessages": "👋 Welcome to Test Strategy Builder AI!\n\nI'm your AI-powered QA Test Strategy Assistant.\n\nI help you transform project requirements, Jira Epics, and Product Requirement Documents (PRDs) into comprehensive, structured, and actionable Software Testing Strategies.",
+        "options": {
+          "customCss": "\n/* ==========================================\n   PREMIUM AI JIRA ASSISTANT\n   Purple / Indigo / Blue Theme\n   Updated: User Message Visibility Fix\n========================================== */\n\n:root {\n  --chat--color--primary: #7c3aed;\n  --chat--color--primary-shade-50: #6d28d9;\n  --chat--color--primary--shade-100: #5b21b6;\n\n  --chat--color--secondary: #2563eb;\n  --chat--color-secondary-shade-50: #1d4ed8;\n\n  --chat--color-white: #ffffff;\n  --chat--color-light: #f5f3ff;\n  --chat--color-light-shade-50: #e9e5ff;\n  --chat--color-light-shade-100: #d8d1fa;\n  --chat--color-medium: #c4b5fd;\n  --chat--color-dark: #17133d;\n  --chat--color-disabled: #cbd5e1;\n  --chat--color-typing: #7c3aed;\n\n  --chat--spacing: 1rem;\n  --chat--border-radius: 18px;\n  --chat--transition-duration: 0.3s;\n\n  --chat--font-family: Inter, -apple-system, BlinkMacSystemFont,\n    \"Segoe UI\", sans-serif;\n\n  /* Window */\n  --chat--window--width: 100%;\n  --chat--window--height: 100%;\n  --chat--window--bottom: 0;\n  --chat--window--right: 0;\n  --chat--window--border: none;\n  --chat--window--border-radius: 0;\n\n  /* Header */\n  --chat--header-height: auto;\n  --chat--header--padding: 2rem;\n  --chat--header--background: #17133d;\n  --chat--header--color: #ffffff;\n  --chat--heading--font-size: 2rem;\n  --chat--subtitle--font-size: 1rem;\n  --chat--subtitle--line-height: 1.7;\n\n  /* Messages */\n  --chat--message--font-size: 1rem;\n  --chat--message--padding: 1rem 1.25rem;\n  --chat--message--border-radius: 18px;\n  --chat--message-line-height: 1.65;\n  --chat--message--margin-bottom: 1.2rem;\n\n  /* Bot Messages */\n  --chat--message--bot--background: rgba(255,255,255,0.92);\n  --chat--message--bot--color: #211b50;\n  --chat--message--bot--border: 1px solid rgba(139,92,246,0.15);\n\n  /* User Messages - Updated for readability */\n  --chat--message--user--background: linear-gradient(\n    135deg,\n    #ede9fe,\n    #dbeafe\n  );\n\n  --chat--message--user--color: #211b50;\n  --chat--message--user--border: 1px solid rgba(124,58,237,0.15);\n\n  --chat--message--pre--background: #f1edff;\n  --chat--messages-list--padding: 2rem;\n\n  /* Input */\n  --chat--textarea--height: 58px;\n  --chat--textarea--max-height: 12rem;\n  --chat--input--font-size: 1rem;\n  --chat--input--border: 1px solid #ddd6fe;\n  --chat--input--border-radius: 18px;\n  --chat--input--padding: 1rem;\n  --chat--input--background: #ffffff;\n  --chat--input--text-color: #211b50;\n  --chat--input--border-active: 1px solid #8b5cf6;\n\n  /* Footer */\n  --chat--footer--background: rgba(255,255,255,0.92);\n  --chat--footer--color: #211b50;\n\n  /* Buttons */\n  --chat--button--padding: 0.85rem 1.4rem;\n  --chat--button--border-radius: 14px;\n  --chat--button--font-size: 1rem;\n\n  --chat--button--color--primary: #ffffff;\n  --chat--button--background--primary: #7c3aed;\n  --chat--button--background--primary--hover: #5b21b6;\n\n  /* Toggle */\n  --chat--toggle--size: 62px;\n  --chat--toggle--border-radius: 50%;\n  --chat--toggle--background: #7c3aed;\n  --chat--toggle--hover--background: #5b21b6;\n  --chat--toggle--color: #ffffff;\n}\n\n/* ==========================================\n   ANIMATED BACKGROUND\n========================================== */\n\n.chat-body {\n  position: relative;\n  overflow: hidden;\n\n  background:\n    radial-gradient(\n      circle at 10% 15%,\n      rgba(139,92,246,0.20),\n      transparent 35%\n    ),\n    radial-gradient(\n      circle at 90% 80%,\n      rgba(56,189,248,0.16),\n      transparent 35%\n    ),\n    linear-gradient(\n      135deg,\n      #f5f3ff,\n      #eef2ff,\n      #ecfeff\n    ) !important;\n\n  background-size: 180% 180%;\n  animation: backgroundFlow 16s ease infinite;\n}\n\n@keyframes backgroundFlow {\n  0% {\n    background-position: 0% 50%;\n  }\n\n  50% {\n    background-position: 100% 50%;\n  }\n\n  100% {\n    background-position: 0% 50%;\n  }\n}\n\n/* ==========================================\n   PREMIUM HEADER\n========================================== */\n\n.chat-header {\n  position: relative;\n  overflow: hidden;\n  isolation: isolate;\n\n  background: linear-gradient(\n    115deg,\n    #17133d,\n    #312e81,\n    #5b21b6,\n    #4338ca\n  ) !important;\n\n  background-size: 250% 250% !important;\n  animation: headerGradient 12s ease infinite;\n\n  padding: 28px 32px !important;\n  border: none !important;\n\n  box-shadow: 0 10px 35px rgba(49,46,129,0.22);\n}\n\n@keyframes headerGradient {\n  0% {\n    background-position: 0% 50%;\n  }\n\n  50% {\n    background-position: 100% 50%;\n  }\n\n  100% {\n    background-position: 0% 50%;\n  }\n}\n\n.chat-header::before {\n  content: \"\";\n  position: absolute;\n  z-index: -1;\n\n  width: 280px;\n  height: 280px;\n\n  right: 5%;\n  top: -180px;\n\n  border-radius: 50%;\n  background: rgba(167,139,250,0.28);\n\n  filter: blur(15px);\n  animation: floatGlow 7s ease-in-out infinite alternate;\n}\n\n.chat-header::after {\n  content: \"\";\n  position: absolute;\n\n  top: 0;\n  left: -100%;\n\n  width: 45%;\n  height: 100%;\n\n  background: linear-gradient(\n    90deg,\n    transparent,\n    rgba(255,255,255,0.15),\n    transparent\n  );\n\n  animation: headerShine 8s ease-in-out infinite;\n  pointer-events: none;\n}\n\n@keyframes headerShine {\n  0%, 65% {\n    left: -100%;\n  }\n\n  100% {\n    left: 150%;\n  }\n}\n\n@keyframes floatGlow {\n  from {\n    transform: translate(0,0) scale(1);\n  }\n\n  to {\n    transform: translate(-40px,45px) scale(1.25);\n  }\n}\n\n/* ==========================================\n   MESSAGE CARDS\n========================================== */\n\n.chat-message {\n  max-width: 78%;\n  border-radius: 20px !important;\n\n  transition:\n    transform 0.3s ease,\n    box-shadow 0.3s ease;\n\n  animation: messageAppear 0.5s cubic-bezier(.2,.8,.2,1) both;\n}\n\n.chat-message:hover {\n  transform: translateY(-3px);\n\n  box-shadow: 0 12px 30px rgba(76,29,149,0.12);\n}\n\n@keyframes messageAppear {\n  from {\n    opacity: 0;\n    transform: translateY(16px) scale(.97);\n  }\n\n  to {\n    opacity: 1;\n    transform: translateY(0) scale(1);\n  }\n}\n\n/* ==========================================\n   BOT MESSAGE STYLING\n========================================== */\n\n.chat-message:has(.chat-message-markdown) {\n  backdrop-filter: blur(14px);\n}\n\n/* ==========================================\n   USER MESSAGE TEXT VISIBILITY FIX\n========================================== */\n\n/* User message bubble */\n.chat-message-from-user,\n.chat-message--user {\n  background: linear-gradient(\n    135deg,\n    #ede9fe,\n    #dbeafe\n  ) !important;\n\n  color: #211b50 !important;\n\n  border: 1px solid rgba(124,58,237,0.15) !important;\n}\n\n/* User message text */\n.chat-message-from-user *,\n.chat-message--user * {\n  color: #211b50 !important;\n}\n\n/* User message paragraphs */\n.chat-message-from-user p,\n.chat-message--user p,\n.chat-message-from-user .chat-message-markdown,\n.chat-message--user .chat-message-markdown {\n  color: #211b50 !important;\n}\n\n/* User message links */\n.chat-message-from-user a,\n.chat-message--user a {\n  color: #5b21b6 !important;\n  text-decoration: underline;\n}\n\n/* ==========================================\n   INPUT AREA\n========================================== */\n\n.chat-footer {\n  background: rgba(255,255,255,0.86) !important;\n\n  backdrop-filter: blur(20px);\n\n  border-top: 1px solid rgba(139,92,246,0.16) !important;\n\n  box-shadow: 0 -8px 30px rgba(49,46,129,0.06);\n\n  padding: 16px 22px !important;\n}\n\n/* Input field */\n.chat-input textarea {\n  color: #211b50 !important;\n  background: #ffffff !important;\n\n  border-radius: 18px !important;\n\n  transition: all 0.3s ease;\n}\n\n.chat-input textarea:focus {\n  outline: none;\n\n  border-color: #8b5cf6 !important;\n\n  box-shadow: 0 0 0 4px rgba(139,92,246,0.13);\n}\n\n.chat-input textarea::placeholder {\n  color: #81789f !important;\n}\n\n/* ==========================================\n   SEND BUTTON\n========================================== */\n\n.chat-input-send-button {\n  border-radius: 15px !important;\n\n  transition: all 0.3s ease !important;\n}\n\n.chat-input-send-button:hover {\n  transform: scale(1.1) rotate(-5deg);\n\n  filter: drop-shadow(\n    0 5px 12px rgba(124,58,237,0.4)\n  );\n}\n\n.chat-input-send-button:active {\n  transform: scale(.94);\n}\n\n/* ==========================================\n   SCROLLBAR\n========================================== */\n\n.chat-body::-webkit-scrollbar {\n  width: 8px;\n}\n\n.chat-body::-webkit-scrollbar-thumb {\n  background: linear-gradient(\n    #8b5cf6,\n    #4f46e5\n  );\n\n  border-radius: 20px;\n}\n\n.chat-body::-webkit-scrollbar-track {\n  background: transparent;\n}\n\n/* ==========================================\n   MOBILE RESPONSIVENESS\n========================================== */\n\n@media (max-width: 600px) {\n  :root {\n    --chat--messages-list--padding: 1rem;\n  }\n\n  .chat-header {\n    padding: 20px 16px !important;\n  }\n\n  .chat-message {\n    max-width: 94%;\n  }\n\n  .chat-footer {\n    padding: 12px !important;\n  }\n}\n\n/* ==========================================\n   ACCESSIBILITY\n========================================== */\n\n@media (prefers-reduced-motion: reduce) {\n  *,\n  *::before,\n  *::after {\n    animation-duration: 0.01ms !important;\n    animation-iteration-count: 1 !important;\n    transition-duration: 0.01ms !important;\n    scroll-behavior: auto !important;\n  }\n}\n"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.chatTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        0
+      ],
+      "id": "96353931-8eb8-4d4e-83f7-18c1b1957226",
+      "name": "When chat message received",
+      "webhookId": "ced830d0-1068-451b-996f-2b70fff7a5ad"
+    },
+    {
+      "parameters": {
+        "options": {
+          "systemMessage": "# RICEPOT – Project Test Strategy Builder AI Agent\n\n## R – ROLE\nYou are a Senior QA Manager and Project Test Strategy Architect with 15+ years of experience in Software Quality Assurance, Test Management, Risk-Based Testing, Test Automation, Performance Testing and Release Management.\n\nYour responsibility is to analyze project-level requirements from Jira and create a practical, evidence-based Project Test Strategy.\n\n**Default Jira Epic ID: AW-1**\n\n## I – INSTRUCTIONS\n\nWhen a user requests a Test Strategy:\n\n1. Identify the Jira Epic ID from the user's message. If missing, use `AW-1`.\n2. Retrieve the Epic using the connected Jira tool.\n3. Analyze its summary, description, PRD, requirements, acceptance criteria, comments and available linked/child issues.\n4. Analyze attachments only if the connected tools can access and extract them.\n5. Identify documented modules, features, workflows, user roles, integrations and quality requirements.\n6. Create a project-wide Test Strategy using all 21 sections below.\n7. Separate confirmed facts, recommendations, assumptions and missing information.\n8. Keep the document in DRAFT status until human approval.\n\nNever generate a generic strategy without first retrieving the Jira Epic.\n\n## C – SOURCE OF TRUTH\n\nUse sources in this order:\n1. Jira Epic and its PRD.\n2. Related Jira issues, if accessible.\n3. Other connected project documentation.\n\nThe Jira Epic is the primary source of truth.\n\nIf information or attachments are inaccessible, explicitly report the limitation. Never claim to have analyzed unavailable content.\n\n## E – EXECUTION APPROACH\n\nFollow this workflow:\n\n1. Retrieve the requested Jira Epic.\n2. Analyze available project requirements.\n3. Identify documented application modules and business workflows.\n4. Evaluate functional and non-functional testing needs.\n5. Assess project-specific risks and dependencies.\n6. Define testing levels, testing types, automation, environments, test data, tools, responsibilities, metrics and release criteria.\n7. Generate the Test Strategy using the exact structure below.\n8. Present the document for human review.\n\nDo not create individual test cases unless explicitly requested.\n\n## P – PERSONA\n\nThink like an experienced QA Manager.\n\nPrioritize:\n- Business-critical functionality.\n- Requirement traceability.\n- Risk-based testing.\n- Functional and integration coverage.\n- Security and performance where applicable.\n- Regression testing.\n- Automation feasibility.\n- Defect management.\n- Release readiness.\n\n## O – MANDATORY OUTPUT FORMAT\n\n# Project Test Strategy – [Project Name]\n\n**Jira Epic:** [Epic ID]  \n**Status:** DRAFT – Pending QA Review  \n**Version:** 1.0  \n**Source:** Jira Epic / PRD\n\n### 1. Executive Summary\nProject overview, strategy purpose, quality objectives and overall testing approach.\n\n### 2. Project Overview\nProject description, business objectives, target users, major capabilities and documented integrations.\n\n### 3. Testing Objectives\nProject-specific functional and non-functional quality objectives.\n\n### 4. Scope of Testing\n- In Scope\n- Out of Scope\n- Testing Boundaries and Dependencies\n\n### 5. Application Modules and Testing Coverage\n\n| Module / Feature | Functionality | Testing Coverage | Priority | Requirement Reference |\n|---|---|---|---|---|\n\nInclude only modules supported by the retrieved evidence.\n\n### 6. Testing Levels\nEvaluate applicable levels: Unit, Component, Integration, System, End-to-End, UAT and Regression Testing. Explain objectives and responsibilities where known.\n\n### 7. Testing Types and Approach\nEvaluate applicability of:\n- Functional Testing\n- Smoke and Sanity Testing\n- Regression Testing\n- Integration and API Testing\n- UI Testing\n- Cross-Browser and Responsive Testing\n- Compatibility Testing\n- Performance, Load and Stress Testing\n- Security Testing\n- Accessibility and Usability Testing\n- Data Validation Testing\n- Exploratory Testing\n- UAT\n\nDo not automatically mark every type mandatory. Explain applicability and approach.\n\n### 8. Risk-Based Testing Strategy\n\n| Risk ID | Risk Description | Impact | Likelihood | Priority | Mitigation |\n|---|---|---|---|---|---|\n\nSeparate documented risks from potential risks.\n\n### 9. Test Automation Strategy\nAutomation objectives, suitable candidates, UI/API/regression automation, maintenance, CI/CD integration and feasibility. Separate existing tools from recommendations.\n\n### 10. Test Environment Strategy\nRequired environments, configurations, access, dependencies, deployment and environment readiness. Mark unknowns clearly.\n\n### 11. Test Data Management Strategy\nData requirements, positive/negative/boundary data, roles, privacy, preparation, reset and cleanup.\n\n### 12. Tools and Technologies\n\n| Category | Existing Tools | Recommended Tools | Purpose | Status |\n|---|---|---|---|---|\n\nConsider test management, defect tracking, API, UI automation, performance, security, CI/CD and reporting.\n\n### 13. Roles and Responsibilities\n\n| Role | Responsibilities | Assigned Resource |\n|---|---|---|\n\nNever invent team members or staffing numbers.\n\n### 14. Defect Management Strategy\nDefect reporting, severity, priority, lifecycle, triage, retesting, regression and closure criteria.\n\n### 15. Entry and Exit Criteria\n- Entry Criteria\n- Exit Criteria\n- Release Readiness Criteria\n\nClearly label proposed targets. Never invent actual thresholds.\n\n### 16. Test Deliverables\nApplicable strategy, plans, scenarios, cases, test data, scripts, defect reports, execution reports, regression reports and sign-off reports.\n\n### 17. Test Metrics and Reporting\nCoverage, execution progress, pass/fail rate, defect metrics, automation coverage, critical defects and traceability. Explain measurement methods. Do not invent values.\n\n### 18. Test Schedule and Milestones\nProposed sequence: requirement analysis, strategy review, planning, design, environment/data preparation, execution, retesting, regression, UAT, release validation and closure.\n\nDo not invent dates or sprint durations.\n\n### 19. Assumptions, Constraints and Dependencies\n- Confirmed Information\n- Assumptions\n- Constraints\n- Dependencies\n- Information Gaps\n\n### 20. Open Questions and Clarifications\n\n| ID | Area | Missing Information | Testing Impact | Stakeholder Question |\n|---|---|---|---|---|\n\n### 21. Final QA Recommendations\nPrioritize recommendations as Critical, High, Medium and Future Improvements. Explain the reason for each.\n\n## HUMAN REVIEW AND APPROVAL\n\nAlways include:\n- Confirmed Information from Jira/PRD\n- Proposed QA Recommendations\n- Assumptions\n- Information Not Available\n- Clarifications Required\n- Risks to Strategy Approval\n\n**Review Decision:** Pending Review / Approved / Changes Required.\n\nNever approve the document without explicit human authorization.\n\n## T – TOOLS AND ANTI-HALLUCINATION RULES\n\n### Jira Tool\n- Use the connected Jira tool to retrieve the Epic.\n- Default to `AW-1` when the user provides no ID.\n- Use retrieved data, not memory or guesses.\n- Retrieve related issues and attachments only when supported.\n\n### DO\n- Use only available evidence for confirmed project facts.\n- Clearly label recommendations and assumptions.\n- Identify missing or ambiguous requirements.\n- Use \"Not specified in Jira/PRD\" when information is unavailable.\n- Maintain requirement traceability.\n\n### DO NOT\n- Invent modules, features, workflows or roles.\n- Assume programming languages, frameworks or architecture.\n- Invent API endpoints or database structures.\n- Invent performance benchmarks or security requirements.\n- Invent team members, dates, sprint durations or metrics.\n- Present recommendations as confirmed requirements.\n- Claim to have read inaccessible documents.\n\n### FINAL RULES\n1. Preserve all 21 sections in the specified order.\n2. Keep the strategy project-specific and concise.\n3. Avoid repetitive or generic explanations.\n4. Use readable tables and professional QA terminology.\n5. Do not generate test cases unless requested.\n6. Keep status as DRAFT until human approval.\n\n**FINAL OBJECTIVE:** Retrieve Jira Epic → Analyze PRD → Identify project modules and risks → Develop a complete project-level Test Strategy → Present a DRAFT for human review."
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        224,
+        0
+      ],
+      "id": "6f9f2717-8ab2-4dc4-a210-025222d52e69",
+      "name": "AI Agent"
+    },
+    {
+      "parameters": {
+        "model": "openai/gpt-oss-120b",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGroq",
+      "typeVersion": 1,
+      "position": [
+        224,
+        208
+      ],
+      "id": "c48db68f-1593-46f1-9521-ee706d12d1ef",
+      "name": "Groq Chat Model",
+      "credentials": {
+        "groqApi": {
+          "id": "huJdgWfqWDg6OYqV",
+          "name": "Groq account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "get",
+        "issueKey": "={{ $fromAI('Issue_Key', ``, 'string') }}",
+        "simplifyOutput": true,
+        "additionalFields": {}
+      },
+      "type": "n8n-nodes-base.jiraTool",
+      "typeVersion": 1,
+      "position": [
+        384,
+        208
+      ],
+      "id": "b598b33a-f1e2-4337-907f-bb6101ff7a3e",
+      "name": "Get an issue in Jira Software",
+      "credentials": {
+        "jiraSoftwareCloudApi": {
+          "id": "K0fJ4occBLIL0hvi",
+          "name": "Jira SW Cloud account"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "When chat message received": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Groq Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Get an issue in Jira Software": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": true,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "e292323a-7fd9-4831-bc80-8325f41dc376",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "5e65d5e8114c11ba6abd90455c75a5ad7dd0ab4bf44864b638e809696cf96cfb"
+  },
+  "nodeGroups": [],
+  "id": "YXBrPnbB3el4eslR",
+  "tags": []
+}

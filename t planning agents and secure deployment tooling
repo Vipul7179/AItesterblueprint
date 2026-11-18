@@ -1,0 +1,19 @@
+ .env.example                                       |   12 [32m+[m
+ .gitignore                                         |   22 [32m+[m[31m-[m
+ .../02_Implementation/.gitignore                   |    2 [32m+[m
+ .../02_Implementation/api/index.js                 |  116 [32m++[m
+ .../02_Implementation/api/jiraService.js           |  117 [32m++[m
+ .../02_Implementation/api/testPlanGenerator.js     |  166 [32m++[m
+ .../02_Implementation/public/app.js                |  917 [32m+++++++++++[m
+ .../02_Implementation/public/favicon.svg           |   52 [32m+[m
+ .../02_Implementation/public/index.html            |   32 [32m+[m
+ .../02_Implementation/public/styles.css            | 1640 [32m++++++++++++++++++++[m
+ .../02_Implementation/vercel.json                  |    9 [32m+[m
+ .../Test Case Creation AI Agent.json               |  128 [32m++[m
+ .../Test Strategy Builder AI Agent.json            |  129 [32m++[m
+ deploy_to_vercel.js                                |  270 [32m++++[m
+ disable_protection.js                              |  101 [32m++[m
+ inspect_vercel.js                                  |   61 [32m+[m
+ test_node.js                                       |    1 [32m+[m
+ test_northstar.js                                  |   81 [32m+[m
+ 18 files changed, 3855 insertions(+), 1 deletion(-)
