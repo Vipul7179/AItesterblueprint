@@ -18,7 +18,21 @@ if (fs.existsSync(envPath)) {
 }
 
 // Environment-variable-based authentication
-const TOKEN = process.env.VERCEL_TOKEN || envVars['VERCEL_TOKEN'];
+function resolveToken() {
+  if (process.env.VERCEL_TOKEN) return process.env.VERCEL_TOKEN;
+  if (envVars['VERCEL_TOKEN']) return envVars['VERCEL_TOKEN'];
+  const appData = process.env.APPDATA || '';
+  const vercelAuthPath = require('path').join(appData, 'com.vercel.cli', 'Data', 'auth.json');
+  if (fs.existsSync(vercelAuthPath)) {
+    try {
+      const authData = JSON.parse(fs.readFileSync(vercelAuthPath, 'utf8'));
+      if (authData.token) return authData.token;
+    } catch (e) {}
+  }
+  return null;
+}
+
+const TOKEN = resolveToken();
 if (!TOKEN) {
   console.error('ERROR: Missing required environment variable: VERCEL_TOKEN');
   console.error('Please set VERCEL_TOKEN in your environment or in C:/AItester/.env');
