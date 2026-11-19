@@ -6,7 +6,10 @@
   <title>Test Plan Generator — Intelligent QA AI Agent</title>
   
   <!-- Matching Futuristic AI Favicon -->
-  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  
+  <!-- Base URL for SPA Routing -->
+  <base href="/" />
   
   <!-- Modern Typography: Plus Jakarta Sans & JetBrains Mono -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,7 +17,7 @@
   <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
   
   <!-- Premium SaaS Stylesheet -->
-  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="/styles.css">
   
   <!-- React 18 & Babel for standalone execution -->
   <script src="https://unpkg.com/react@18/umd/react.production.min.js" crossorigin></script>
@@ -24,9 +27,47 @@
   <!-- Markdown Parser & HTML Sanitizer for Rich Test Plan Presentation -->
   <script src="https://unpkg.com/marked@12.0.0/marked.min.js"></script>
   <script src="https://unpkg.com/dompurify@3.0.9/dist/purify.min.js"></script>
+
+  <!-- Browser Inspection Deterrents (Public Deployment Security) -->
+  <script>
+    (function() {
+      // 1. Disable browser context menu (allow inside text inputs/textareas for normal copy/paste)
+      document.addEventListener('contextmenu', function(e) {
+        if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) {
+          return true;
+        }
+        e.preventDefault();
+        return false;
+      }, false);
+
+      // 2. Deter common developer-tool & view-source keyboard shortcuts
+      document.addEventListener('keydown', function(e) {
+        // F12 key
+        if (e.key === 'F12' || e.keyCode === 123) {
+          e.preventDefault();
+          return false;
+        }
+        // Ctrl+Shift+I (DevTools), Ctrl+Shift+J (Console), Ctrl+Shift+C (Inspect)
+        if (e.ctrlKey && e.shiftKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c')) {
+          e.preventDefault();
+          return false;
+        }
+        // Ctrl+U (View Source)
+        if (e.ctrlKey && !e.shiftKey && (e.key === 'u' || e.key === 'U')) {
+          e.preventDefault();
+          return false;
+        }
+        // Mac: Cmd+Option+I, Cmd+Option+J, Cmd+Option+C, Cmd+Option+U
+        if (e.metaKey && e.altKey && (e.key === 'I' || e.key === 'i' || e.key === 'J' || e.key === 'j' || e.key === 'C' || e.key === 'c' || e.key === 'U' || e.key === 'u')) {
+          e.preventDefault();
+          return false;
+        }
+      }, false);
+    })();
+  </script>
 </head>
 <body>
   <div id="root"></div>
-  <script type="text/babel" src="app.js"></script>
+  <script type="text/babel" src="/app.js"></script>
 </body>
 </html>

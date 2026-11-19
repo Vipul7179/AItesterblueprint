@@ -1,14 +1,13 @@
-const https = require('https');
-
-function getJiraConfig() {
-  const url = process.env.JIRA_URL || 'https://vpsvipulsingh100.atlassian.net';
-  const email = process.env.JIRA_EMAIL || '';
-  const token = process.env.JIRA_API_TOKEN || '';
+function getJiraConfig(overrides = {}) {
+  const url = overrides.baseUrl || overrides.jiraUrl || process.env.JIRA_BASE_URL || process.env.JIRA_URL || 'https://vpsvipulsingh100.atlassian.net';
+  const email = overrides.email !== undefined ? overrides.email : (overrides.jiraEmail || process.env.JIRA_USER_EMAIL || process.env.JIRA_EMAIL || '');
+  const token = overrides.token !== undefined ? overrides.token : (overrides.jiraToken || process.env.JIRA_API_TOKEN || '');
   return {
-    baseUrl: url.replace(/\/+$/, ''),
-    email,
-    token,
-    isConfigured: Boolean(email && token)
+    baseUrl: (url || '').replace(/\/+$/, ''),
+    email: (email || '').trim(),
+    token: (token || '').trim(),
+    isConfigured: Boolean((email || '').trim() && (token || '').trim()),
+    source: (overrides.token || overrides.email) ? 'session' : 'system'
   };
 }
 
@@ -22,10 +21,10 @@ function extractTextFromAdf(node) {
   return '';
 }
 
-async function testJiraConnection() {
-  const config = getJiraConfig();
+async function testJiraConnection(customConfig = null) {
+  const config = getJiraConfig(customConfig || {});
   if (!config.isConfigured) {
-    return { success: false, message: 'Jira email or API token not configured in .env' };
+    return { success: false, message: 'Jira email or API token not configured.' };
   }
 
   const authHeader = 'Basic ' + Buffer.from(`${config.email}:${config.token}`).toString('base64');
@@ -39,28 +38,41 @@ async function testJiraConnection() {
     });
 
     if (res.ok) {
-      const data = await res.json();
       return {
         success: true,
-        displayName: data.displayName || data.emailAddress,
-        email: data.emailAddress
+        status: 'Connected',
+        message: 'Successfully connected to Jira Cloud REST v3. Workspace is authorized and healthy.'
       };
     } else {
+      let detail = `Jira API returned HTTP ${res.status}: ${res.statusText}.`;
+      if (res.status === 401) {
+        detail = 'Authentication failed (401 Unauthorized). Please check your email and API token.';
+      } else if (res.status === 403) {
+        detail = 'Access forbidden (403 Forbidden). Ensure your Jira account has API access permissions.';
+      } else if (res.status === 404) {
+        detail = 'Workspace endpoint not found (404 Not Found). Verify your Jira Workspace URL.';
+      }
       return {
         success: false,
         status: res.status,
-        message: `Jira returned HTTP ${res.status}: ${res.statusText}`
+        message: detail
       };
     }
   } catch (error) {
-    return { success: false, message: error.message };
+    let msg = error.message;
+    if (msg.includes('ENOTFOUND') || msg.includes('getaddrinfo')) {
+      msg = 'Could not resolve Jira Workspace URL. Check the URL and your network connection.';
+    } else if (msg.includes('ECONNREFUSED')) {
+      msg = 'Connection refused by target server. Verify the Workspace URL and port.';
+    }
+    return { success: false, message: `Connection failed: ${msg}` };
   }
 }
 
-async function fetchJiraIssue(issueKey) {
-  const config = getJiraConfig();
+async function fetchJiraIssue(issueKey, customConfig = null) {
+  const config = getJiraConfig(customConfig || {});
   if (!config.isConfigured) {
-    throw new Error('Jira credentials not configured in parent .env file.');
+    throw new Error('Jira credentials not configured. Please configure your Jira settings.');
   }
 
   const cleanKey = issueKey.trim().toUpperCase();
@@ -109,7 +121,7 @@ async function fetchJiraIssue(issueKey) {
     labels: fields.labels || [],
     assignee: fields.assignee?.displayName || 'Unassigned',
     creator: fields.creator?.displayName || 'Unknown',
-    url: `${config.baseUrl}/browse/${data.key}`
+    url: null // Redacted to prevent exposing private Jira workspace URL
   };
 }
 

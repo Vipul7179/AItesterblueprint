@@ -1,7 +1,8 @@
 const fs = require('fs');
 
-async function callGroqAi(prompt, systemPrompt) {
-  const apiKey = process.env.GROQ_API_KEY;
+async function callGroqAi(prompt, systemPrompt, options = {}) {
+  const apiKey = options.apiKey || options.groqApiKey || process.env.GROQ_API_KEY;
+  const model = options.model || options.groqModel || 'llama-3.3-70b-versatile';
   if (!apiKey) return null;
 
   try {
@@ -12,13 +13,13 @@ async function callGroqAi(prompt, systemPrompt) {
         'Content-Type': 'application/json'
       },
       body: JSON.stringify({
-        model: 'llama-3.3-70b-versatile',
+        model: model,
         messages: [
           { role: 'system', content: systemPrompt },
           { role: 'user', content: prompt }
         ],
         temperature: 0.1,
-        max_tokens: 3000
+        max_tokens: 3500
       })
     });
 
@@ -32,6 +33,151 @@ async function callGroqAi(prompt, systemPrompt) {
   } catch (err) {
     console.warn('Groq API invocation failed:', err.message);
     return null;
+  }
+}
+
+async function callOllamaAi(prompt, systemPrompt, options = {}) {
+  const baseUrl = (options.url || options.ollamaUrl || 'http://localhost:11434').replace(/\/+$/, '');
+  const model = options.model || options.ollamaModel || 'llama3';
+
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 60000); // 60s timeout
+
+    const res = await fetch(`${baseUrl}/api/generate`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        model: model,
+        prompt: prompt,
+        system: systemPrompt,
+        stream: false,
+        options: {
+          temperature: 0.1
+        }
+      }),
+      signal: controller.signal
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!res.ok) {
+      console.warn(`Ollama returned HTTP ${res.status}: ${res.statusText}`);
+      return null;
+    }
+
+    const data = await res.json();
+    return data.response || null;
+  } catch (err) {
+    console.warn('Ollama invocation failed:', err.message);
+    return null;
+  }
+}
+
+async function testLlmConnection(options = {}) {
+  const provider = (options.provider || 'groq').toLowerCase();
+
+  if (provider === 'ollama') {
+    const baseUrl = (options.url || options.ollamaUrl || 'http://localhost:11434').replace(/\/+$/, '');
+    const targetModel = options.model || options.ollamaModel || 'llama3';
+    const startTime = Date.now();
+
+    try {
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+      const res = await fetch(`${baseUrl}/api/tags`, {
+        method: 'GET',
+        headers: { 'Accept': 'application/json' },
+        signal: controller.signal
+      });
+      clearTimeout(timeoutId);
+
+      if (!res.ok) {
+        return {
+          success: false,
+          provider: 'ollama',
+          message: `Ollama server returned HTTP ${res.status}: ${res.statusText}`
+        };
+      }
+
+      const data = await res.json();
+      const availableModels = (data.models || []).map(m => m.name);
+      const latencyMs = Date.now() - startTime;
+      const modelFound = availableModels.some(m => m === targetModel || m.startsWith(`${targetModel}:`));
+
+      return {
+        success: true,
+        provider: 'ollama',
+        serverUrl: baseUrl,
+        model: targetModel,
+        modelFound,
+        availableModels,
+        latencyMs,
+        message: modelFound 
+          ? `Connected to Ollama! Model '${targetModel}' is ready (${latencyMs}ms).`
+          : `Connected to Ollama (${latencyMs}ms), but model '${targetModel}' is not pulled yet.`
+      };
+    } catch (err) {
+      return {
+        success: false,
+        provider: 'ollama',
+        serverUrl: baseUrl,
+        message: `Failed to reach Ollama at ${baseUrl}: ${err.message}. Ensure Ollama is running ('ollama serve').`
+      };
+    }
+  }
+
+  // Groq Connection Test
+  const apiKey = options.apiKey || options.groqApiKey || process.env.GROQ_API_KEY;
+  const targetModel = options.model || options.groqModel || 'llama-3.3-70b-versatile';
+  if (!apiKey) {
+    return { success: false, provider: 'groq', message: 'Groq API Key is not configured.' };
+  }
+
+  const startTime = Date.now();
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+    const res = await fetch('https://api.groq.com/openai/v1/models', {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${apiKey}`,
+        'Accept': 'application/json'
+      },
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+
+    if (!res.ok) {
+      return {
+        success: false,
+        provider: 'groq',
+        message: `Groq authentication failed (HTTP ${res.status}: ${res.statusText}). Verify your API key.`
+      };
+    }
+
+    const data = await res.json();
+    const availableModels = (data.data || []).map(m => m.id);
+    const latencyMs = Date.now() - startTime;
+
+    return {
+      success: true,
+      provider: 'groq',
+      model: targetModel,
+      availableModels,
+      latencyMs,
+      message: `Groq API Key verified successfully! Model '${targetModel}' active (${latencyMs}ms).`
+    };
+  } catch (err) {
+    return {
+      success: false,
+      provider: 'groq',
+      message: `Failed to connect to Groq API: ${err.message}`
+    };
   }
 }
 
@@ -95,7 +241,7 @@ function generateDeterministicPlan(issue) {
 `;
 }
 
-async function generateTestPlan(issue) {
+async function generateTestPlan(issue, llmConfig = null) {
   const systemPrompt = `You are a Senior QA Automation Architect with 15+ years of experience.
 Your job is to generate a comprehensive, professional Test Plan strictly following the provided template format.
 Strict rules:
@@ -155,7 +301,15 @@ Here is the retrieved Jira Issue Data:
 - Description:
 ${issue.description}`;
 
-  const aiResult = await callGroqAi(userPrompt, systemPrompt);
+  const provider = (llmConfig?.provider || (process.env.GROQ_API_KEY ? 'groq' : 'deterministic')).toLowerCase();
+  let aiResult = null;
+
+  if (provider === 'ollama') {
+    aiResult = await callOllamaAi(userPrompt, systemPrompt, llmConfig);
+  } else if (provider === 'groq' || llmConfig?.apiKey || llmConfig?.groqApiKey || process.env.GROQ_API_KEY) {
+    aiResult = await callGroqAi(userPrompt, systemPrompt, llmConfig || {});
+  }
+
   if (aiResult && aiResult.includes('## 1. Scope & Objectives')) {
     return aiResult;
   }
@@ -164,5 +318,8 @@ ${issue.description}`;
 }
 
 module.exports = {
+  callGroqAi,
+  callOllamaAi,
+  testLlmConnection,
   generateTestPlan
 };

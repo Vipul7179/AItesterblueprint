@@ -84,7 +84,7 @@ const AILogo = ({ size = 42, className = '' }) => (
 );
 
 /* ==========================================================================
-   INLINE SVG ICONS (Crisp, High-Performance, Zero-Dependency)
+   INLINE SVG ICONS (Crisp, Zero-Dependency)
    ========================================================================== */
 
 const Icons = {
@@ -163,6 +163,12 @@ const Icons = {
       <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
     </svg>
   ),
+  Lock: (props) => (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/>
+      <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+    </svg>
+  ),
   Cpu: () => (
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <rect x="4" y="4" width="16" height="16" rx="2"/>
@@ -188,6 +194,35 @@ const Icons = {
     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
       <path d="m21 2-2 2m-1.5 1.5L16 7l-1.5-1.5M7.5 14.5 4 18v2h2v-2l1.5-1.5"/>
       <circle cx="15.5" cy="8.5" r="4.5"/>
+    </svg>
+  ),
+  Eye: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+      <circle cx="12" cy="12" r="3"/>
+    </svg>
+  ),
+  EyeOff: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M9.88 9.88a3 3 0 1 0 4.24 4.24"/>
+      <path d="M10.73 5.08A10.43 10.43 0 0 1 12 5c7 0 10 7 10 7a13.16 13.16 0 0 1-1.67 2.68"/>
+      <path d="M6.61 6.61A13.526 13.526 0 0 0 2 12s3 7 10 7a9.74 9.74 0 0 0 5.39-1.61"/>
+      <line x1="2" y1="2" x2="22" y2="22"/>
+    </svg>
+  ),
+  Server: () => (
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <rect width="20" height="8" x="2" y="2" rx="2" ry="2"/>
+      <rect width="20" height="8" x="2" y="14" rx="2" ry="2"/>
+      <line x1="6" x2="6.01" y1="6" y2="6"/>
+      <line x1="6" x2="6.01" y1="18" y2="18"/>
+    </svg>
+  ),
+  Trash: () => (
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+      <path d="M3 6h18"/>
+      <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/>
+      <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/>
     </svg>
   ),
   ExternalLink: () => (
@@ -232,7 +267,6 @@ const Icons = {
 
 /* ==========================================================================
    ANIMATED MILKY WAY CANVAS COMPONENT
-   Real-Time Twinkling Starfield, Cosmic Dust & Reduced-Motion Detection
    ========================================================================== */
 
 function GalaxyCanvas() {
@@ -251,13 +285,11 @@ function GalaxyCanvas() {
     resize();
     window.addEventListener('resize', resize);
 
-    // Stars clustered along deep space and diagonal Milky Way corridor
     const STAR_COUNT = 190;
     const stars = [];
     const colors = ['#ffffff', '#c7d2fe', '#818cf8', '#38bdf8', '#fbcfe8', '#fef3c7'];
 
     for (let i = 0; i < STAR_COUNT; i++) {
-      // 45% of stars concentrated along the diagonal Milky Way band
       const inGalaxyBand = Math.random() < 0.45;
       let x, y;
       if (inGalaxyBand) {
@@ -300,7 +332,6 @@ function GalaxyCanvas() {
         ctx.arc(star.x, star.y, star.radius, 0, Math.PI * 2);
         ctx.fill();
 
-        // Subtle atmospheric glow halo for prominent stars
         if (star.radius > 1.25) {
           ctx.globalAlpha = alpha * 0.28;
           ctx.beginPath();
@@ -327,11 +358,75 @@ function GalaxyCanvas() {
 }
 
 /* ==========================================================================
+   URL ROUTING HELPERS (Native HTML5 History API — Zero External Dependencies)
+   Preserves route on page refresh, direct URL load & Back/Forward buttons
+   ========================================================================== */
+
+function getRouteFromLocation() {
+  try {
+    const pathname = (window.location.pathname || '').toLowerCase().replace(/\/+$/, '');
+    const hash = (window.location.hash || '').toLowerCase().replace(/^#\/?/, '');
+    
+    if (pathname === '/settings' || hash === 'settings') {
+      return 'settings';
+    }
+  } catch (e) {
+    console.warn('Route parsing fallback:', e);
+  }
+  return 'generator';
+}
+
+/* ==========================================================================
+   FORM VALIDATION HELPERS
+   ========================================================================== */
+
+function validateJiraUrl(url) {
+  if (!url || !url.trim()) {
+    return 'Jira Workspace URL is required.';
+  }
+  const trimmed = url.trim();
+  try {
+    const formatted = trimmed.startsWith('http://') || trimmed.startsWith('https://') ? trimmed : `https://${trimmed}`;
+    const parsed = new URL(formatted);
+    if (parsed.protocol !== 'http:' && parsed.protocol !== 'https:') {
+      return 'URL must use http:// or https:// protocol.';
+    }
+    if (!parsed.hostname || (!parsed.hostname.includes('.') && parsed.hostname !== 'localhost')) {
+      return 'Please enter a valid Jira Cloud URL (e.g. https://your-workspace.atlassian.net).';
+    }
+    return null;
+  } catch {
+    return 'Please enter a valid Jira Cloud URL (e.g. https://your-workspace.atlassian.net).';
+  }
+}
+
+function validateJiraEmail(email) {
+  if (!email || !email.trim()) {
+    return 'Jira Account Email is required.';
+  }
+  const trimmed = email.trim();
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  if (!emailRegex.test(trimmed)) {
+    return 'Please enter a valid email address (e.g. user@company.com).';
+  }
+  return null;
+}
+
+function validateJiraToken(token, hasExistingToken) {
+  const trimmed = (token || '').trim();
+  if (!hasExistingToken && !trimmed) {
+    return 'Jira API Token is required for initial configuration.';
+  }
+  return null;
+}
+
+/* ==========================================================================
    MAIN REACT APPLICATION COMPONENT
    ========================================================================== */
 
 function App() {
-  const [activeTab, setActiveTab] = useState('generator');
+  // Initialize route directly from browser URL (preserves route on page refresh)
+  const [activeTab, setActiveTab] = useState(() => getRouteFromLocation());
   const [issueKey, setIssueKey] = useState('');
   const [loading, setLoading] = useState(false);
   const [loadingStage, setLoadingStage] = useState(0); // 0 = idle, 1 = Jira Fetch, 2 = AI Generation
@@ -339,17 +434,124 @@ function App() {
   const [jiraIssue, setJiraIssue] = useState(null);
   const [testPlan, setTestPlan] = useState(null);
   const [config, setConfig] = useState(null);
-  const [connStatus, setConnStatus] = useState(null);
-  const [testingConn, setTestingConn] = useState(false);
   const [copied, setCopied] = useState(false);
   const [planViewMode, setPlanViewMode] = useState('formatted'); // 'formatted' | 'raw'
 
-  // Load configuration from server on mount
+  // Navigate with HTML5 pushState so URL bar, Back/Forward, and bookmarks stay in sync
+  const navigateTo = (tab, replace = false) => {
+    setActiveTab(tab);
+    try {
+      const targetPath = tab === 'settings' ? '/settings' : '/';
+      if (window.location.pathname !== targetPath) {
+        if (replace) {
+          window.history.replaceState({ tab }, '', targetPath);
+        } else {
+          window.history.pushState({ tab }, '', targetPath);
+        }
+      }
+    } catch (e) {
+      // Graceful fallback for restricted environments
+      window.location.hash = tab === 'settings' ? 'settings' : '';
+    }
+  };
+
+  // Synchronize browser Back and Forward navigation events
   useEffect(() => {
-    fetch('/api/config')
+    const handlePopState = (e) => {
+      const route = (e.state && e.state.tab) || getRouteFromLocation();
+      setActiveTab(route);
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    window.addEventListener('hashchange', handlePopState);
+
+    // Ensure the initial history state entry has the current tab stored
+    try {
+      const currentRoute = getRouteFromLocation();
+      const currentPath = currentRoute === 'settings' ? '/settings' : '/';
+      if (window.location.pathname !== currentPath && !window.location.hash) {
+        window.history.replaceState({ tab: currentRoute }, '', currentPath);
+      } else {
+        window.history.replaceState({ tab: currentRoute }, '', window.location.href);
+      }
+    } catch (e) {}
+
+    return () => {
+      window.removeEventListener('popstate', handlePopState);
+      window.removeEventListener('hashchange', handlePopState);
+    };
+  }, []);
+
+  // Update document title dynamically based on active route
+  useEffect(() => {
+    document.title = activeTab === 'settings'
+      ? 'Settings — Intelligent QA AI Agent'
+      : 'Test Plan Generator — Intelligent QA AI Agent';
+  }, [activeTab]);
+
+  // Settings State: Jira
+  const [jiraUrl, setJiraUrl] = useState('');
+  const [jiraEmail, setJiraEmail] = useState('');
+  const [jiraToken, setJiraToken] = useState('');
+  const [showJiraToken, setShowJiraToken] = useState(false);
+  const [jiraTesting, setJiraTesting] = useState(false);
+  const [jiraSaving, setJiraSaving] = useState(false);
+  const [jiraStatus, setJiraStatus] = useState(null);
+  const [jiraFieldErrors, setJiraFieldErrors] = useState({});
+
+  // Settings State: LLM
+  const [llmProvider, setLlmProvider] = useState('groq'); // 'groq' | 'ollama'
+  const [groqApiKey, setGroqApiKey] = useState('');
+  const [showGroqKey, setShowGroqKey] = useState(false);
+  const [groqModel, setGroqModel] = useState('llama-3.3-70b-versatile');
+  const [ollamaUrl, setOllamaUrl] = useState('http://localhost:11434');
+  const [ollamaModel, setOllamaModel] = useState('llama3');
+  const [llmTesting, setLlmTesting] = useState(false);
+  const [llmSaving, setLlmSaving] = useState(false);
+  const [llmStatus, setLlmStatus] = useState(null);
+
+  // Settings State: Reset
+  const [resetting, setResetting] = useState(false);
+  const [resetStatus, setResetStatus] = useState(null);
+
+  // Load configuration from server on mount
+  const fetchConfig = () => {
+    fetch('/api/config', { credentials: 'same-origin' })
       .then(res => res.json())
-      .then(data => setConfig(data))
+      .then(data => {
+        setConfig(data);
+        // Only populate URL and Email if user explicitly configured custom values in their session
+        if (data.jira?.baseUrl) {
+          setJiraUrl(data.jira.baseUrl);
+        }
+        if (data.jira?.email) {
+          setJiraEmail(data.jira.email);
+        }
+        // Always keep secret fields blank on reopening settings!
+        setJiraToken('');
+        setGroqApiKey('');
+
+        if (data.llm?.provider) {
+          setLlmProvider(data.llm.provider);
+        } else if (data.aiProvider) {
+          const isOllama = data.aiProvider.toLowerCase().includes('ollama');
+          setLlmProvider(isOllama ? 'ollama' : 'groq');
+        }
+        if (data.llm?.groqModel || data.groqModel) {
+          setGroqModel(data.llm?.groqModel || data.groqModel);
+        }
+        if (data.llm?.ollamaUrl || data.ollamaUrl) {
+          setOllamaUrl(data.llm?.ollamaUrl || data.ollamaUrl);
+        }
+        if (data.llm?.ollamaModel || data.ollamaModel) {
+          setOllamaModel(data.llm?.ollamaModel || data.ollamaModel);
+        }
+      })
       .catch(err => console.error('Config fetch failed:', err));
+  };
+
+  useEffect(() => {
+    fetchConfig();
   }, []);
 
   // Safe markdown parser
@@ -367,18 +569,226 @@ function App() {
     }
   }, [testPlan]);
 
-  // Test Jira Connection handler
-  const handleTestConnection = async () => {
-    setTestingConn(true);
-    setConnStatus(null);
+  // Handler: Test Jira Connection
+  const handleTestJira = async () => {
+    const hasExistingToken = Boolean(config?.hasJiraToken || config?.jira?.hasToken);
+    const typedUrl = jiraUrl.trim();
+    const typedEmail = jiraEmail.trim();
+    const typedToken = jiraToken.trim();
+
+    // If user typed in fields, validate before testing
+    if (typedUrl || typedEmail || typedToken) {
+      const urlErr = validateJiraUrl(typedUrl);
+      const emailErr = validateJiraEmail(typedEmail);
+      const tokenErr = validateJiraToken(typedToken, hasExistingToken);
+
+      const errors = {};
+      if (urlErr) errors.url = urlErr;
+      if (emailErr) errors.email = emailErr;
+      if (tokenErr) errors.token = tokenErr;
+
+      setJiraFieldErrors(errors);
+      if (Object.keys(errors).length > 0) {
+        setJiraStatus({
+          success: false,
+          message: Object.values(errors)[0]
+        });
+        return;
+      }
+    }
+
+    setJiraTesting(true);
+    setJiraStatus(null);
     try {
-      const res = await fetch('/api/test-connection');
+      let cleanUrl = typedUrl;
+      if (cleanUrl && !cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
+        cleanUrl = `https://${cleanUrl}`;
+      }
+
+      const payload = {};
+      if (cleanUrl) payload.baseUrl = cleanUrl;
+      if (typedEmail) payload.email = typedEmail;
+      if (typedToken) payload.token = typedToken;
+
+      const res = await fetch('/api/test-connection/jira', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify(payload)
+      });
       const data = await res.json();
-      setConnStatus(data);
+      if (res.ok && data.success) {
+        setJiraStatus({
+          success: true,
+          message: data.message || 'Successfully connected to Jira Cloud REST v3. Workspace is authorized and healthy.'
+        });
+      } else {
+        setJiraStatus({
+          success: false,
+          message: data.message || data.error || 'Connection failed. Please verify credentials.'
+        });
+        if (data.fieldErrors) {
+          setJiraFieldErrors(data.fieldErrors);
+        }
+      }
     } catch (err) {
-      setConnStatus({ success: false, message: err.message });
+      setJiraStatus({ success: false, message: `Connection test error: ${err.message}` });
     } finally {
-      setTestingConn(false);
+      setJiraTesting(false);
+    }
+  };
+
+  // Handler: Save Jira Settings to Encrypted Session Cookie
+  const handleSaveJira = async () => {
+    const hasExistingToken = Boolean(config?.hasJiraToken || config?.jira?.hasToken);
+    const urlErr = validateJiraUrl(jiraUrl);
+    const emailErr = validateJiraEmail(jiraEmail);
+    const tokenErr = validateJiraToken(jiraToken, hasExistingToken);
+
+    const errors = {};
+    if (urlErr) errors.url = urlErr;
+    if (emailErr) errors.email = emailErr;
+    if (tokenErr) errors.token = tokenErr;
+
+    setJiraFieldErrors(errors);
+    setJiraStatus(null);
+
+    // Stop execution immediately if validation fails
+    if (Object.keys(errors).length > 0) {
+      return;
+    }
+
+    let cleanUrl = jiraUrl.trim();
+    if (!cleanUrl.startsWith('http://') && !cleanUrl.startsWith('https://')) {
+      cleanUrl = `https://${cleanUrl}`;
+    }
+
+    setJiraSaving(true);
+    try {
+      const res = await fetch('/api/settings/jira', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify({
+          baseUrl: cleanUrl,
+          email: jiraEmail.trim(),
+          token: jiraToken.trim()
+        })
+      });
+      const data = await res.json();
+      if (res.ok && data.success) {
+        setJiraStatus({ 
+          success: true, 
+          message: 'Jira configuration securely saved and encrypted for your active session.' 
+        });
+        setJiraToken(''); // Clear plain text token from memory
+        setJiraFieldErrors({});
+        fetchConfig();
+      } else {
+        setJiraStatus({
+          success: false,
+          message: data.error || (data.errors ? Object.values(data.errors).join(', ') : 'Failed to save Jira settings.')
+        });
+        if (data.fieldErrors) {
+          setJiraFieldErrors(data.fieldErrors);
+        }
+      }
+    } catch (err) {
+      setJiraStatus({ success: false, message: `Save error: ${err.message}` });
+    } finally {
+      setJiraSaving(false);
+    }
+  };
+
+  // Handler: Test LLM Connection
+  const handleTestLlm = async () => {
+    setLlmTesting(true);
+    setLlmStatus(null);
+    try {
+      const payload = {
+        provider: llmProvider,
+        groqApiKey: groqApiKey.trim(),
+        groqModel: groqModel.trim(),
+        ollamaUrl: ollamaUrl.trim(),
+        ollamaModel: ollamaModel.trim()
+      };
+      const res = await fetch('/api/test-connection/llm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      setLlmStatus(data);
+    } catch (err) {
+      setLlmStatus({ success: false, message: err.message });
+    } finally {
+      setLlmTesting(false);
+    }
+  };
+
+  // Handler: Save LLM Settings to Encrypted Session Cookie
+  const handleSaveLlm = async () => {
+    setLlmSaving(true);
+    setLlmStatus(null);
+    try {
+      const payload = {
+        provider: llmProvider,
+        groqApiKey: groqApiKey.trim(),
+        groqModel: groqModel.trim(),
+        ollamaUrl: ollamaUrl.trim(),
+        ollamaModel: ollamaModel.trim()
+      };
+      const res = await fetch('/api/settings/llm', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
+        body: JSON.stringify(payload)
+      });
+      const data = await res.json();
+      if (data.success) {
+        setLlmStatus({ 
+          success: true, 
+          message: `AI provider (${llmProvider.toUpperCase()}) settings securely saved for your active session.` 
+        });
+        setGroqApiKey(''); // Clear plain text API key from memory
+        fetchConfig();
+      } else {
+        setLlmStatus({ success: false, message: data.error || 'Failed to save LLM settings.' });
+      }
+    } catch (err) {
+      setLlmStatus({ success: false, message: err.message });
+    } finally {
+      setLlmSaving(false);
+    }
+  };
+
+  // Handler: Reset Settings to System Defaults
+  const handleResetSettings = async () => {
+    if (!window.confirm('Reset all custom settings and restore system defaults?')) return;
+    setResetting(true);
+    setResetStatus(null);
+    try {
+      const res = await fetch('/api/settings/reset', {
+        method: 'POST',
+        credentials: 'same-origin'
+      });
+      const data = await res.json();
+      if (data.success) {
+        setResetStatus({ success: true, message: 'Custom credentials cleared. Reverted to defaults.' });
+        setJiraUrl('');
+        setJiraEmail('');
+        setJiraToken('');
+        setGroqApiKey('');
+        setJiraStatus(null);
+        setJiraFieldErrors({});
+        setLlmStatus(null);
+        fetchConfig();
+      }
+    } catch (err) {
+      setResetStatus({ success: false, message: err.message });
+    } finally {
+      setResetting(false);
     }
   };
 
@@ -400,6 +810,7 @@ function App() {
       const issueRes = await fetch('/api/jira/issue', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
         body: JSON.stringify({ issueKey: key })
       });
 
@@ -415,6 +826,7 @@ function App() {
       const planRes = await fetch('/api/testplan/generate', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
+        credentials: 'same-origin',
         body: JSON.stringify({ issue: issueData.issue })
       });
 
@@ -480,7 +892,7 @@ function App() {
       {/* Modern SaaS Navigation Header */}
       <nav className="navbar">
         <div className="nav-left">
-          <div className="brand-wrapper" onClick={() => setActiveTab('generator')} title="Test Plan Generator">
+          <div className="brand-wrapper" onClick={() => navigateTo('generator')} title="Test Plan Generator">
             <div className="brand-icon-container">
               <AILogo size={38} />
             </div>
@@ -503,17 +915,18 @@ function App() {
         <div className="nav-tabs">
           <button
             className={`nav-btn ${activeTab === 'generator' ? 'active' : ''}`}
-            onClick={() => setActiveTab('generator')}
+            onClick={() => navigateTo('generator')}
           >
             <Icons.Layers />
             <span>Generator</span>
           </button>
           <button
             className={`nav-btn ${activeTab === 'settings' ? 'active' : ''}`}
-            onClick={() => setActiveTab('settings')}
+            onClick={() => navigateTo('settings')}
           >
             <Icons.Settings />
             <span>Settings</span>
+            {config?.isCustomSession && <span className="custom-session-dot" title="Custom Session Active"></span>}
           </button>
         </div>
       </nav>
@@ -535,7 +948,9 @@ function App() {
                 Transform Jira requirements into comprehensive, intelligent QA test plans with the power of AI.
               </p>
               <div className="hero-badges-row">
-                <span className="feature-tag tag-float-1">⚡ Groq Llama 3.3 70B</span>
+                <span className="feature-tag tag-float-1">
+                  ⚡ {config?.aiProvider ? config.aiProvider : 'Groq Llama 3.3 70B'}
+                </span>
                 <span className="feature-tag tag-float-2">🎯 RICE-POT Template</span>
                 <span className="feature-tag tag-float-3">🔒 Atlassian REST v3</span>
                 <span className="feature-tag tag-float-4">🛡️ Human Review Gate</span>
@@ -636,7 +1051,7 @@ function App() {
                     <span>
                       {loadingStage === 1 
                         ? 'Authenticating with Jira Cloud REST v3...' 
-                        : 'Applying RICE-POT template with Groq Llama 3.3 70B...'}
+                        : `Applying RICE-POT template with ${config?.aiProvider || 'Groq AI'}...`}
                     </span>
                   </div>
                 </div>
@@ -664,18 +1079,10 @@ function App() {
                   {jiraIssue.priority && (
                     <span className="badge-tag badge-priority">{jiraIssue.priority}</span>
                   )}
-                  {jiraIssue.url && (
-                    <a 
-                      href={jiraIssue.url} 
-                      target="_blank" 
-                      rel="noopener noreferrer" 
-                      className="feature-tag"
-                      style={{ marginLeft: 'auto', textDecoration: 'none' }}
-                    >
-                      <span>Open in Jira</span>
-                      <Icons.ExternalLink />
-                    </a>
-                  )}
+                  <span className="badge-tag badge-source" style={{ marginLeft: 'auto' }}>
+                    <Icons.Lock style={{ width: '12px', height: '12px' }} />
+                    <span>Protected Requirement</span>
+                  </span>
                 </div>
                 <h3 className="issue-summary-title">{jiraIssue.summary}</h3>
                 {jiraIssue.description && (
@@ -752,105 +1159,473 @@ function App() {
           </div>
         ) : (
           /* ==========================================================================
-             SETTINGS TAB (Personal Jira Email Protected & Hidden)
+             SETTINGS TAB — WORKSPACE SETTINGS & USER-CONFIGURABLE INTEGRATIONS
+             Per-User Encrypted Isolation with Zero-Secret-Leak Security
              ========================================================================== */
-          <div className="glass-card settings-view-card">
-            <div className="card-header-styled">
-              <div className="card-title-group">
-                <h2>
-                  <Icons.Settings />
-                  System Configuration & Integrations
-                </h2>
-                <p>Environment parameters configured securely in parent .env file</p>
-              </div>
-              <button
-                className="btn-generate"
-                onClick={handleTestConnection}
-                disabled={testingConn}
-              >
-                {testingConn ? (
-                  <>
-                    <span className="spinner-dual"></span>
-                    <span>Testing Connection...</span>
-                  </>
-                ) : (
-                  <>
-                    <Icons.Refresh />
-                    <span>Test Jira Connection</span>
-                  </>
-                )}
-              </button>
-            </div>
+          <div className="settings-page-wrapper">
+            {/* Settings Top Bar */}
+            <div className="glass-card settings-header-card" style={{ marginBottom: '1.5rem' }}>
+              <div className="settings-top-banner">
+                <div className="card-title-group">
+                  <h2>
+                    <Icons.Settings />
+                    Workspace Settings & Integrations
+                  </h2>
+                  <p>
+                    Configure your personal Jira workspace credentials and select between high-speed Groq Cloud or local Ollama AI. Credentials are encrypted and isolated per user.
+                  </p>
+                </div>
 
-            {/* Connection Test Result Feedback (Email completely hidden from banner) */}
-            {connStatus && (
-              <div className={`alert-box ${connStatus.success ? 'alert-success' : 'alert-error'}`}>
-                {connStatus.success ? <Icons.Check /> : <Icons.AlertTriangle />}
-                <div>
-                  <strong>{connStatus.success ? 'Authentication Verified: ' : 'Connection Failed: '}</strong>
-                  <span>
-                    {connStatus.success
-                      ? `Authenticated as ${connStatus.displayName || 'Authorized Account'} with Jira Cloud REST API v3.`
-                      : connStatus.message}
-                  </span>
-                </div>
-              </div>
-            )}
-
-            {/* Settings Overview Cards (Email Card Fully Removed) */}
-            <div className="settings-grid-layout">
-              <div className="setting-card">
-                <div className="setting-card-header">
-                  <span className="setting-label-text">Jira Workspace URL</span>
-                  <Icons.Globe />
-                </div>
-                <div className="setting-card-value">
-                  {config?.jiraUrl || 'https://vpsvipulsingh100.atlassian.net'}
-                </div>
-                <div className="setting-card-desc">Atlassian Cloud Instance endpoint</div>
-              </div>
-
-              <div className="setting-card">
-                <div className="setting-card-header">
-                  <span className="setting-label-text">Jira API Token</span>
-                  <Icons.Key />
-                </div>
-                <div className="setting-card-value">
-                  {config?.hasJiraToken ? (
-                    <span className="status-badge-active">
-                      <Icons.Check />
-                      Configured & Protected
+                <div className="settings-session-controls">
+                  <div className="session-status-badge">
+                    <span className={`status-indicator-dot ${config?.isCustomSession ? 'dot-custom' : 'dot-default'}`}></span>
+                    <span>
+                      {config?.isCustomSession ? 'Custom Session (Encrypted)' : 'System Defaults (.env)'}
                     </span>
-                  ) : (
-                    <span style={{ color: '#f87171' }}>Missing in .env</span>
+                  </div>
+
+                  {config?.isCustomSession && (
+                    <button
+                      className="btn-reset-session"
+                      onClick={handleResetSettings}
+                      disabled={resetting}
+                      title="Clear your custom credentials and revert to system defaults"
+                    >
+                      {resetting ? (
+                        <span className="spinner-dual" style={{ width: '13px', height: '13px' }}></span>
+                      ) : (
+                        <Icons.Trash />
+                      )}
+                      <span>Reset Defaults</span>
+                    </button>
                   )}
                 </div>
-                <div className="setting-card-desc">Loaded on backend, never exposed to client</div>
               </div>
 
-              <div className="setting-card">
-                <div className="setting-card-header">
-                  <span className="setting-label-text">AI Generation Engine</span>
-                  <Icons.Cpu />
+              {resetStatus && (
+                <div className={`alert-box ${resetStatus.success ? 'alert-success' : 'alert-error'}`} style={{ marginTop: '1rem' }}>
+                  {resetStatus.success ? <Icons.Check /> : <Icons.AlertTriangle />}
+                  <div>
+                    <span>{resetStatus.message}</span>
+                  </div>
                 </div>
-                <div className="setting-card-value" style={{ color: '#a5b4fc' }}>
-                  {config?.aiProvider || 'Groq Llama 3.3 70B'}
+              )}
+            </div>
+
+            <div className="settings-cards-grid">
+              {/* ============================================================
+                  SECTION 1: JIRA WORKSPACE INTEGRATION (EDITABLE CREDENTIALS)
+                  ============================================================ */}
+              <div className="glass-card settings-card">
+                <div className="card-header-styled">
+                  <div className="card-title-group">
+                    <h3>
+                      <Icons.Globe />
+                      Jira Cloud Integration
+                    </h3>
+                    <p>Connect to your Atlassian Cloud workspace via REST API v3</p>
+                  </div>
+                  <div className="card-badge-status">
+                    {config?.jira?.connected || config?.hasJiraToken ? (
+                      <span className="status-badge-active">
+                        <Icons.Check />
+                        {config?.jira?.status || 'Credentials Configured'}
+                      </span>
+                    ) : (
+                      <span className="status-badge-inactive">Not Configured</span>
+                    )}
+                  </div>
                 </div>
-                <div className="setting-card-desc">Deterministic QA fallback engine ready</div>
+
+                <div className="settings-form-body">
+                  {/* Jira Base URL Input */}
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="jira-url-input">
+                      Jira Base URL <span className="required-star">*</span>
+                    </label>
+                    <div className="form-input-wrapper">
+                      <div className="input-prefix-icon"><Icons.Globe /></div>
+                      <input
+                        id="jira-url-input"
+                        type="url"
+                        className={`form-control ${jiraFieldErrors.url ? 'input-error' : ''}`}
+                        placeholder="https://your-workspace.atlassian.net"
+                        value={jiraUrl}
+                        onChange={(e) => {
+                          setJiraUrl(e.target.value);
+                          if (jiraFieldErrors.url) setJiraFieldErrors(prev => ({ ...prev, url: null }));
+                        }}
+                        disabled={jiraSaving || jiraTesting}
+                      />
+                    </div>
+                    {jiraFieldErrors.url ? (
+                      <div className="field-error-msg">
+                        <Icons.AlertTriangle />
+                        <span>{jiraFieldErrors.url}</span>
+                      </div>
+                    ) : (
+                      <span className="form-hint">Enter your team's Atlassian Cloud root URL (e.g. https://your-workspace.atlassian.net)</span>
+                    )}
+                  </div>
+
+                  {/* Jira Account Email Input */}
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="jira-email-input">
+                      Jira Email <span className="required-star">*</span>
+                    </label>
+                    <div className="form-input-wrapper">
+                      <div className="input-prefix-icon">@</div>
+                      <input
+                        id="jira-email-input"
+                        type="email"
+                        className={`form-control ${jiraFieldErrors.email ? 'input-error' : ''}`}
+                        placeholder="user@company.com"
+                        value={jiraEmail}
+                        onChange={(e) => {
+                          setJiraEmail(e.target.value);
+                          if (jiraFieldErrors.email) setJiraFieldErrors(prev => ({ ...prev, email: null }));
+                        }}
+                        disabled={jiraSaving || jiraTesting}
+                      />
+                    </div>
+                    {jiraFieldErrors.email ? (
+                      <div className="field-error-msg">
+                        <Icons.AlertTriangle />
+                        <span>{jiraFieldErrors.email}</span>
+                      </div>
+                    ) : (
+                      <span className="form-hint">Email address associated with your Atlassian API token</span>
+                    )}
+                  </div>
+
+                  {/* Jira API Token Input (Masked with Eye reveal) */}
+                  <div className="form-group">
+                    <label className="form-label" htmlFor="jira-token-input">
+                      Jira API Token {!(config?.jira?.hasToken || config?.hasJiraToken) && <span className="required-star">*</span>}
+                    </label>
+                    <div className="form-input-wrapper">
+                      <div className="input-prefix-icon"><Icons.Key /></div>
+                      <input
+                        id="jira-token-input"
+                        type={showJiraToken ? "text" : "password"}
+                        className={`form-control ${jiraFieldErrors.token ? 'input-error' : ''}`}
+                        placeholder={(config?.jira?.hasToken || config?.hasJiraToken) 
+                          ? '•••••••••••••••• (Credentials Configured - Leave blank to retain)' 
+                          : 'Enter Jira API Token'}
+                        value={jiraToken}
+                        onChange={(e) => {
+                          setJiraToken(e.target.value);
+                          if (jiraFieldErrors.token) setJiraFieldErrors(prev => ({ ...prev, token: null }));
+                        }}
+                        autoComplete="new-password"
+                        disabled={jiraSaving || jiraTesting}
+                      />
+                      <button
+                        type="button"
+                        className="btn-input-icon"
+                        onClick={() => setShowJiraToken(!showJiraToken)}
+                        title={showJiraToken ? "Hide token" : "Show token"}
+                        aria-label="Toggle token visibility"
+                        disabled={jiraSaving || jiraTesting}
+                      >
+                        {showJiraToken ? <Icons.EyeOff /> : <Icons.Eye />}
+                      </button>
+                    </div>
+                    {jiraFieldErrors.token ? (
+                      <div className="field-error-msg">
+                        <Icons.AlertTriangle />
+                        <span>{jiraFieldErrors.token}</span>
+                      </div>
+                    ) : (
+                      <span className="form-hint">
+                        {(config?.jira?.hasToken || config?.hasJiraToken)
+                          ? 'Credentials configured. Leave blank to retain existing token or enter a new one to replace.'
+                          : <>Generate an API token from <a href="https://id.atlassian.com/manage-profile/security/api-tokens" target="_blank" rel="noopener noreferrer" className="external-link-accent">Atlassian Security Settings <Icons.ExternalLink /></a></>}
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Jira Feedback Banner */}
+                  {jiraStatus && (
+                    <div className={`alert-box ${jiraStatus.success ? 'alert-success' : 'alert-error'}`}>
+                      {jiraStatus.success ? <Icons.Check /> : <Icons.AlertTriangle />}
+                      <div>
+                        <strong>{jiraStatus.success ? 'Success: ' : 'Error: '}</strong>
+                        <span>{jiraStatus.message || (jiraStatus.success ? 'Connected successfully' : 'Connection failed')}</span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* Jira Action Buttons */}
+                  <div className="form-actions-row">
+                    <button
+                      type="button"
+                      className="btn-action-secondary"
+                      onClick={handleTestJira}
+                      disabled={jiraTesting || jiraSaving}
+                    >
+                      {jiraTesting ? (
+                        <>
+                          <span className="spinner-dual"></span>
+                          <span>Testing...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Icons.Refresh />
+                          <span>Test Jira Connection</span>
+                        </>
+                      )}
+                    </button>
+
+                    <button
+                      type="button"
+                      className="btn-action-primary"
+                      onClick={handleSaveJira}
+                      disabled={jiraSaving || jiraTesting}
+                    >
+                      {jiraSaving ? (
+                        <>
+                          <span className="spinner-dual"></span>
+                          <span>Saving...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Icons.Check />
+                          <span>Save Credentials</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* ============================================================
+                  SECTION 2: AI GENERATION PROVIDER (EDITABLE CONFIGURATION)
+                  ============================================================ */}
+              <div className="glass-card settings-card">
+                <div className="card-header-styled">
+                  <div className="card-title-group">
+                    <h3>
+                      <Icons.Cpu />
+                      AI Provider Configuration
+                    </h3>
+                    <p>Select provider and configure credentials for test plan synthesis</p>
+                  </div>
+                  <div className="card-badge-status">
+                    <span className="status-badge-engine">
+                      <span className="badge-icon">{llmProvider === 'groq' ? '⚡' : '🦙'}</span>
+                      <span className="badge-text">{llmProvider === 'groq' ? 'Groq Cloud' : 'Ollama Local'}</span>
+                    </span>
+                  </div>
+                </div>
+
+                <div className="settings-form-body">
+                  {/* Provider Selection Segmented Control */}
+                  <div className="provider-selector-wrap">
+                    <label className="form-label">Active Provider</label>
+                    <div className="segmented-toggle">
+                      <button
+                        type="button"
+                        className={`toggle-option ${llmProvider === 'groq' ? 'selected' : ''}`}
+                        onClick={() => { setLlmProvider('groq'); setLlmStatus(null); }}
+                      >
+                        <Icons.Sparkles />
+                        <div className="toggle-labels">
+                          <span className="toggle-primary">Groq Cloud AI</span>
+                          <span className="toggle-secondary">Llama 3.3 70B • High Speed</span>
+                        </div>
+                      </button>
+
+                      <button
+                        type="button"
+                        className={`toggle-option ${llmProvider === 'ollama' ? 'selected' : ''}`}
+                        onClick={() => { setLlmProvider('ollama'); setLlmStatus(null); }}
+                      >
+                        <Icons.Server />
+                        <div className="toggle-labels">
+                          <span className="toggle-primary">Ollama (Local / Self-Hosted)</span>
+                          <span className="toggle-secondary">Private • Zero Cloud Egress</span>
+                        </div>
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* GROQ CONFIGURATION FIELDS */}
+                  {llmProvider === 'groq' ? (
+                    <div className="provider-fields-group">
+                      <div className="form-group">
+                        <label className="form-label" htmlFor="groq-key-input">
+                          Groq API Key (Masked)
+                        </label>
+                        <div className="form-input-wrapper">
+                          <div className="input-prefix-icon"><Icons.Key /></div>
+                          <input
+                            id="groq-key-input"
+                            type={showGroqKey ? "text" : "password"}
+                            className="form-control"
+                            placeholder={(config?.llm?.hasGroqKey || config?.hasGroqKey) 
+                              ? '•••••••••••••••• (API Key Configured - Leave blank to retain)' 
+                              : 'Enter Groq API Key (gsk_...)'}
+                            value={groqApiKey}
+                            onChange={(e) => setGroqApiKey(e.target.value)}
+                            autoComplete="new-password"
+                            disabled={llmSaving || llmTesting}
+                          />
+                          <button
+                            type="button"
+                            className="btn-input-icon"
+                            onClick={() => setShowGroqKey(!showGroqKey)}
+                            title={showGroqKey ? "Hide key" : "Show key"}
+                            aria-label="Toggle Groq key visibility"
+                            disabled={llmSaving || llmTesting}
+                          >
+                            {showGroqKey ? <Icons.EyeOff /> : <Icons.Eye />}
+                          </button>
+                        </div>
+                        <span className="form-hint">
+                          {(config?.llm?.hasGroqKey || config?.hasGroqKey)
+                            ? 'API Key is configured. Leave blank to retain existing key or enter a new one to replace.'
+                            : <>Get a free API key at <a href="https://console.groq.com/keys" target="_blank" rel="noopener noreferrer" className="external-link-accent">console.groq.com <Icons.ExternalLink /></a></>}
+                        </span>
+                      </div>
+
+                      <div className="form-group">
+                        <label className="form-label" htmlFor="groq-model-select">
+                          Groq Model Name
+                        </label>
+                        <select
+                          id="groq-model-select"
+                          className="form-control form-select"
+                          value={groqModel}
+                          onChange={(e) => setGroqModel(e.target.value)}
+                          disabled={llmSaving || llmTesting}
+                        >
+                          <option value="llama-3.3-70b-versatile">llama-3.3-70b-versatile (Recommended • 128k context)</option>
+                          <option value="llama-3.1-8b-instant">llama-3.1-8b-instant (Ultra-fast • 128k context)</option>
+                          <option value="mixtral-8x7b-32768">mixtral-8x7b-32768 (MoE • 32k context)</option>
+                          <option value="gemma2-9b-it">gemma2-9b-it (Google Gemma 2 9B)</option>
+                        </select>
+                        <span className="form-hint">Selected model for RICE-POT test plan synthesis</span>
+                      </div>
+                    </div>
+                  ) : (
+                    /* OLLAMA CONFIGURATION FIELDS */
+                    <div className="provider-fields-group">
+                      <div className="form-group">
+                        <label className="form-label" htmlFor="ollama-url-input">
+                          Ollama Server Base URL
+                        </label>
+                        <div className="form-input-wrapper">
+                          <div className="input-prefix-icon"><Icons.Server /></div>
+                          <input
+                            id="ollama-url-input"
+                            type="url"
+                            className="form-control"
+                            placeholder="http://localhost:11434"
+                            value={ollamaUrl}
+                            onChange={(e) => setOllamaUrl(e.target.value)}
+                            disabled={llmSaving || llmTesting}
+                          />
+                        </div>
+                        <span className="form-hint">Default local daemon URL is <code>http://localhost:11434</code></span>
+                      </div>
+
+                      <div className="form-group">
+                        <label className="form-label" htmlFor="ollama-model-input">
+                          Ollama Model Name
+                        </label>
+                        <div className="form-input-wrapper">
+                          <div className="input-prefix-icon"><Icons.Cpu /></div>
+                          <input
+                            id="ollama-model-input"
+                            type="text"
+                            className="form-control"
+                            placeholder="llama3, mistral, qwen2.5-coder, deepseek-r1"
+                            value={ollamaModel}
+                            onChange={(e) => setOllamaModel(e.target.value)}
+                            disabled={llmSaving || llmTesting}
+                          />
+                        </div>
+                        <span className="form-hint">Model must already be downloaded via <code>ollama pull &lt;model&gt;</code></span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* LLM Feedback Banner */}
+                  {llmStatus && (
+                    <div className={`alert-box ${llmStatus.success ? 'alert-success' : 'alert-error'}`}>
+                      {llmStatus.success ? <Icons.Check /> : <Icons.AlertTriangle />}
+                      <div>
+                        <strong>{llmStatus.success ? 'Verified: ' : 'Test Failed: '}</strong>
+                        <span>
+                          {llmStatus.message}
+                          {llmStatus.latencyMs && ` (${llmStatus.latencyMs}ms)`}
+                        </span>
+                      </div>
+                    </div>
+                  )}
+
+                  {/* LLM Action Buttons */}
+                  <div className="form-actions-row">
+                    <button
+                      type="button"
+                      className="btn-action-secondary"
+                      onClick={handleTestLlm}
+                      disabled={llmTesting || llmSaving}
+                    >
+                      {llmTesting ? (
+                        <>
+                          <span className="spinner-dual"></span>
+                          <span>Testing LLM...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Icons.Refresh />
+                          <span>Test AI Connection</span>
+                        </>
+                      )}
+                    </button>
+
+                    <button
+                      type="button"
+                      className="btn-action-primary"
+                      onClick={handleSaveLlm}
+                      disabled={llmSaving || llmTesting}
+                    >
+                      {llmSaving ? (
+                        <>
+                          <span className="spinner-dual"></span>
+                          <span>Saving...</span>
+                        </>
+                      ) : (
+                        <>
+                          <Icons.Check />
+                          <span>Save Configuration</span>
+                        </>
+                      )}
+                    </button>
+                  </div>
+                </div>
               </div>
             </div>
 
-            {/* Zero-Leak Security Guarantee Card */}
-            <div className="security-banner">
+            {/* Zero-Leak Security Architecture Banner */}
+            <div className="glass-card security-banner-card" style={{ marginTop: '1.5rem' }}>
               <div className="security-icon-badge">
                 <Icons.Shield />
               </div>
-              <div className="security-text">
-                <h4>Parent Environment Security & Credential Isolation</h4>
-                <p>
-                  API tokens and credentials reside strictly in the parent <code>.env</code> file. 
-                  Zero sensitive authentication material is sent to or stored in client browser storage or DOM tree.
+              <div className="security-banner-content">
+                <h4 style={{ margin: '0 0 0.5rem 0', fontSize: '1rem', color: '#f8fafc', fontWeight: 600 }}>Stateless AES-256-GCM Session Encryption & Cross-User Isolation</h4>
+                <p style={{ margin: '0 0 0.85rem 0', fontSize: '0.86rem', color: '#94a3b8', lineHeight: 1.6 }}>
+                  Credentials you enter are encrypted and stored exclusively in your own browser's <code>HttpOnly</code>, <code>SameSite=Strict</code> session cookie. 
+                  Secrets are never stored in localStorage, never exposed in API responses or public settings, and kept completely isolated per user.
                 </p>
+                <div className="security-features-tags" style={{ display: 'flex', flexWrap: 'wrap', gap: '0.65rem' }}>
+                  <span className="badge-source"><Icons.Check /> Zero Client Egress</span>
+                  <span className="badge-source"><Icons.Check /> Per-User Session Isolation</span>
+                  <span className="badge-source"><Icons.Check /> Secret Tokens Kept Blank on Reopen</span>
+                  <span className="badge-source"><Icons.Check /> AES-256-GCM Encrypted Vault</span>
+                </div>
               </div>
             </div>
           </div>
@@ -859,7 +1634,6 @@ function App() {
 
       {/* ==========================================================================
           DEVELOPER BRANDING FOOTER (Vipul Singh)
-          Displayed seamlessly across Generator & Settings pages
           ========================================================================== */}
       <footer className="app-footer">
         <div className="footer-container">
@@ -870,7 +1644,7 @@ function App() {
 
           <div className="footer-links">
             <a 
-              href="https://www.linkedin.com/in/vipul-singh-46792a1a4/"
+              href="https://www.linkedin.com/in/vipul-singh-46792a1a4/" 
               target="_blank" 
               rel="noopener noreferrer" 
               className="footer-link-pill"
